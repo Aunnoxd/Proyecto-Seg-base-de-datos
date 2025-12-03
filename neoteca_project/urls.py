@@ -28,6 +28,7 @@ from django.conf import settings
 from django.conf.urls.static import static 
 from neoteca import views
 from neoteca.tutor_views import panel_tutor
+from neoteca.views_registry import registro_tutor, registrar_estudiante_por_tutor
 
 urlpatterns = [
     # 1. TU RUTA PERSONALIZADA DEBE IR PRIMERO QUE EL ADMIN GENERAL
@@ -48,6 +49,8 @@ urlpatterns = [
     path('libros/leer/<int:id_libro>/', ver_libro_pdf, name='ver_libro_pdf'),
     path('api/guardar-tiempo/', registrar_tiempo_ajax, name='registrar_tiempo_ajax'),
     path('tutor/mi-panel/', panel_tutor, name='panel_tutor'),
+    path('registro/tutor/', registro_tutor, name='registro_tutor'),
+    path('tutor/inscribir-estudiante/', registrar_estudiante_por_tutor, name='registrar_estudiante'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

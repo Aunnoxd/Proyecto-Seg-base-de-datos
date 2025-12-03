@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Django
 *.log
 *.pot
@@ -15,3 +16,12 @@ env/
 # Editor
 .vscode/
 .idea/
+=======
+# .gitignore
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+.DS_Store
+media/
+>>>>>>> 7bb83fc6f90f23578ea3d09d2eb3e5354401d5b5
