@@ -116,4 +116,4 @@ Ahora sí, ve a tu terminal (en la carpeta del proyecto) y ejecuta estos comando
 
 ¡Y listo! Tu proyecto estará en línea con una presentación profesional. Avísame cuando termine de subir para continuar con el **Registro de Usuarios**.
 ````
->>>>>>> b3f764cb2b3e7a3fc1df6fcf7d6f5eb2248d40cc
+
