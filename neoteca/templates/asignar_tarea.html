@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Asignar Nueva Tarea</h1>
+<p class="mb-4">Profesor: <strong>{{ profesor.nombres }} {{ profesor.apellidos }}</strong></p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Datos de la Asignación</h6>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %} 
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Estudiante:</label>
+                    {{ form.estudiante }}
+                    <small class="form-text text-muted">Seleccione al alumno destinatario.</small>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                     <label>Filtrar Grado (Visual):</label>
+                    {{ form.grado_filtro }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Libro a Leer:</label>
+                    {{ form.libro }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Materia / Asignatura:</label>
+                    {{ form.materia }}
+                </div>
+            </div>
+
+            <hr>
+            
+            <button type="submit" class="btn btn-primary btn-icon-split btn-lg">
+                <span class="icon text-white-50">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span class="text">Guardar Asignación</span>
+            </button>
+            
+            <a href="{% url 'mi_clase' %}" class="btn btn-secondary btn-lg ml-2">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

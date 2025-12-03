@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NEOTECA - Biblioteca Escolar</title>
+
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">NEOTECA</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">BIBLIOTECA</div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lista_libros' %}">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Catálogo de Libros</span>
+                </a>
+            </li>
+
+            {% if request.session.usuario_id %}
+            
+                {% if request.session.usuario_rol == 'ESTUDIANTE' %}
+                    <hr class="sidebar-divider">
+                    <div class="sidebar-heading">ESTUDIANTE</div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mis_asignaciones' %}">
+                            <i class="fas fa-fw fa-tasks"></i>
+                            <span>Mis Tareas</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if request.session.usuario_rol == 'PROFESOR' %}
+                    <hr class="sidebar-divider">
+                    <div class="sidebar-heading">DOCENTE</div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mi_clase' %}">
+                            <i class="fas fa-fw fa-chalkboard-teacher"></i>
+                            <span>Gestionar Clase</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if request.session.usuario_rol == 'TUTOR' %}
+                    <hr class="sidebar-divider">
+                    <div class="sidebar-heading">FAMILIA / TUTOR</div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'panel_tutor' %}">
+                            <i class="fas fa-fw fa-user-shield"></i>
+                            <span>Progreso Estudiantes</span>
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_libros' %}">
+                            <i class="fas fa-fw fa-book"></i>
+                            <span>Ver Catálogo</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if request.session.usuario_rol == 'ADMIN' %}
+                    <hr class="sidebar-divider">
+                    <div class="sidebar-heading">ADMINISTRACIÓN</div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'gestion_libros' %}">
+                            <i class="fas fa-fw fa-table"></i>
+                            <span>Gestionar Libros</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+            {% else %}
+                <hr class="sidebar-divider">
+                <div class="sidebar-heading">ACCESO</div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="fas fa-fw fa-sign-in-alt"></i>
+                        <span>Iniciar Sesión</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        {% if request.session.usuario_id %}
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        {{ request.session.usuario_nombre }} ({{ request.session.usuario_rol }})
+                                    </span>
+                                    <img class="img-profile rounded-circle" src="{% static 'img/undraw_profile.svg' %}">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </div>
+                            </li>
+                        {% else %}
+                             <li class="nav-item">
+                                <a class="nav-link text-primary font-weight-bold" href="{% url 'login' %}">
+                                    Ingresar
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+                <div class="container-fluid">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% block content %}
+                    {% endblock %}
+                </div>
+
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Neoteca &copy; 2025</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Salir?</h5>
+                    <button class="close" type="button" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Selecciona "Cerrar Sesión" si deseas salir.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

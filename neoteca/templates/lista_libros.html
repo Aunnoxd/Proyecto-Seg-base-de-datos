@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{{ titulo }}</h1>
+    
+    {% if es_invitado and not request.session.usuario_id %}
+        <a href="{% url 'login' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-sign-in-alt fa-sm text-white-50"></i> Iniciar Sesión
+        </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for libro in libros %}
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            {{ libro.get_categoria_display }}
+                        </div>
+                        
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ libro.titulo }}</div>
+                        <div class="text-xs text-gray-500 mb-2">{{ libro.autor }}</div>
+
+                        {% if rol_actual == 'ESTUDIANTE' %}
+                            <div class="row no-gutters align-items-center mt-2">
+                                <div class="col-auto">
+                                    <div class="h6 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        {{ libro.minutos_acumulados }} min
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" 
+                                             style="width: 20%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-3 text-center">
+                            
+                            {% if rol_actual == 'ESTUDIANTE' %}
+                                <a href="{% url 'ver_libro_pdf' libro.id_libro %}" class="btn btn-success btn-sm btn-block">
+                                    <i class="fas fa-book-reader"></i> Leer Ahora
+                                </a>
+
+                            {% elif rol_actual == 'PROFESOR' or rol_actual == 'ADMIN' %}
+                                {% if libro.archivo_pdf %}
+                                    <a href="{{ libro.archivo_pdf.url }}" target="_blank" class="btn btn-primary btn-sm btn-block">
+                                        <i class="fas fa-eye"></i> Revisar Contenido
+                                    </a>
+                                {% else %}
+                                    <button disabled class="btn btn-secondary btn-sm btn-block">Sin PDF</button>
+                                {% endif %}
+
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-secondary btn-sm btn-block">
+                                    <i class="fas fa-lock"></i> Entrar para Leer
+                                </a>
+                            {% endif %}
+                            
+                        </div>
+
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-book fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center mt-5">
+        <h3 class="text-gray-500">No hay libros disponibles para tu nivel por el momento.</h3>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

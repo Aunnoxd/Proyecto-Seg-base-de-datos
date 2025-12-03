@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h1 class="h4 text-gray-800 mb-0">Leyendo: <b>{{ libro.titulo }}</b></h1>
+        <small class="text-muted">{{ libro.autor }}</small>
+    </div>
+    
+    <div class="d-flex">
+        <div class="card border-left-success shadow-sm py-2 px-3 mr-3">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Histórico</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <span id="total-bd">{{ minutos_totales }}</span> min
+                    </div>
+                </div>
+                <div class="col-auto"><i class="fas fa-history fa-2x text-gray-300"></i></div>
+            </div>
+        </div>
+
+        <div class="card border-left-info shadow-sm py-2 px-3">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sesión Actual</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="cronometro">00:00</div>
+                </div>
+                <div class="col-auto"><i class="fas fa-clock fa-2x text-gray-300"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ml-3 text-right">
+        {% if libro.archivo_pdf %}
+            <a href="#" data-url="{{ libro.archivo_pdf.url }}" id="btn-descargar-final" class="btn btn-success btn-sm shadow-sm mb-1 d-block w-100">
+                <i class="fas fa-check-circle"></i> Terminar y Descargar
+            </a>
+        {% endif %}
+        <a href="{% url 'lista_libros' %}" class="btn btn-secondary btn-sm shadow-sm d-block mt-1">Volver</a>
+    </div>
+</div>
+
+<div class="card shadow mb-4" style="height: 80vh;">
+    <div class="card-body p-0 h-100 bg-dark">
+        {% if libro.archivo_pdf %}
+            <iframe src="{{ libro.archivo_pdf.url }}#toolbar=0" width="100%" height="100%" style="border:none;"></iframe>
+        {% else %}
+            <div class="text-center text-white mt-5">No hay PDF disponible.</div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Variables
+    let tiempoSesion = 0;    // Para mostrar en pantalla
+    let tiempoPendiente = 0; // Para enviar al servidor
+    const libroId = Number("{{ libro.id_libro|default:'0' }}");
+    const csrfToken = "{{ csrf_token }}";
+    const urlAjax = "{% url 'registrar_tiempo_ajax' %}";
+
+    // 1. Reloj Visual (Cada segundo)
+    setInterval(() => {
+        tiempoSesion++;
+        tiempoPendiente++;
+        
+        // Formato MM:SS
+        const min = Math.floor(tiempoSesion / 60);
+        const sec = tiempoSesion % 60;
+        document.getElementById('cronometro').innerText = 
+            `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }, 1000);
+
+    // 2. Función de Guardado (Núcleo)
+    function guardarProgreso(esCompletado = false, accionDespues = null) {
+        // Validamos: Si no hay tiempo nuevo y no es completar, no hacemos nada
+        if (tiempoPendiente <= 0 && !esCompletado) return;
+
+        const segundosAEnviar = tiempoPendiente;
+        
+        console.log(` Enviando: ${segundosAEnviar}s | Completado: ${esCompletado}`);
+
+        fetch(urlAjax, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json", 
+                "X-CSRFToken": csrfToken 
+            },
+            body: JSON.stringify({ 
+                id_libro: libroId, 
+                segundos: segundosAEnviar, 
+                completado: esCompletado 
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Respuesta Servidor:", data);
+            
+            if (data.status === 'ok') {
+                // Reiniciamos el contador pendiente porque ya se guardó
+                tiempoPendiente = 0; 
+                
+                // Actualizamos el total histórico visualmente
+                const totalMin = Math.round(data.nuevo_total / 60);
+                document.getElementById('total-bd').innerText = totalMin;
+
+                // Si había una acción pendiente (ej: descargar), la ejecutamos
+                if (accionDespues) accionDespues();
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    // 3. Guardado Automático (Cada 15 segundos)
+    setInterval(() => guardarProgreso(false), 15000);
+
+    // 4. Guardado al Salir de la página
+    window.addEventListener('beforeunload', () => guardarProgreso(false));
+
+    // 5. BOTÓN DESCARGAR (Lógica arreglada)
+    const btn = document.getElementById('btn-descargar-final');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault(); // 1. DETENER la descarga inmediata
+            
+            // Cambiar texto para feedback visual
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            btn.classList.add('disabled');
+
+            // 2. Guardar con flag completado=true
+            guardarProgreso(true, function() {
+                // 3. Cuando el servidor responda OK, iniciamos la descarga
+                const urlPDF = btn.getAttribute('data-url');
+                window.location.href = urlPDF; // Esto inicia la descarga real
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> ¡Listo!';
+                setTimeout(() => {
+                    alert("¡Tarea marcada como completada! Descargando archivo...");
+                }, 500);
+            });
+        });
+    }
+</script>
+
+{% endblock %}

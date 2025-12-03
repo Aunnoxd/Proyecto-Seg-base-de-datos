@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Catálogo de Libros</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Libros Disponibles</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Categoría</th>
+                        <th>Descarga / Archivo</th>
+                        <th>Fecha Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for libro in libros %}
+                    <tr>
+                        <td>{{ libro.titulo }}</td>
+                        <td>{{ libro.autor }}</td>
+                        <td>
+                            <span class="badge badge-secondary">{{ libro.categoria }}</span>
+                        </td>
+                        <td>
+                            {% if libro.archivo_pdf %}
+                                <a href="{{ libro.archivo_pdf.url }}" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-download"></i> Descargar PDF
+                                </a>
+                            {% else %}
+                                <span class="text-danger">Archivo no subido</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ libro.created_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

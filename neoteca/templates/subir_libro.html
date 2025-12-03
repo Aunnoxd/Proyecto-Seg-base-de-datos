@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">
+    {% if form.instance.pk %}
+        Gestión de Contenido: Editar "{{ form.instance.titulo }}"
+    {% else %}
+        Gestión de Contenido: Subir Nuevo Libro
+    {% endif %}
+</h1>
+
+<p class="mb-4">Complete los detalles del libro y gestione el archivo PDF.</p>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Detalles del Libro</h6>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Título:</label>
+                    {{ form.titulo }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Autor:</label>
+                    {{ form.autor }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="font-weight-bold">Categoría:</label>
+                    {{ form.categoria }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="font-weight-bold">Grado Escolar:</label>
+                    {{ form.grado }}
+                    <small class="text-muted d-block">Dejar vacío para "Todos".</small>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="font-weight-bold">Tiempo Estimado:</label>
+                    
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white">
+                                <i class="fas fa-hourglass-half"></i>
+                            </span>
+                        </div>
+                        
+                        {{ form.tiempo_estimado }}
+                        
+                        <div class="input-group-append">
+                            <span class="input-group-text">min</span>
+                        </div>
+                    </div>
+                    
+                    <small class="text-muted">Ej: 90 para hora y media.</small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="font-weight-bold">Archivo PDF:</label>
+                    {{ form.archivo_pdf }}
+                    
+                    {% if form.instance.pk and form.instance.archivo_pdf %}
+                        <div class="alert alert-warning mt-2 py-2">
+                            <i class="fas fa-file-pdf"></i> 
+                            <strong>Archivo Actual:</strong> 
+                            <a href="{{ form.instance.archivo_pdf.url }}" target="_blank">Ver PDF cargado</a>
+                            <br>
+                            <small>(Sube otro archivo solo si quieres reemplazarlo)</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="font-weight-bold">Descripción / Resumen:</label>
+                {{ form.descripcion }}
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Ups, revisa lo siguiente:</strong>
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <hr>
+            <button type="submit" class="btn btn-primary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span class="text">
+                    {% if form.instance.pk %}Actualizar Cambios{% else %}Subir y Guardar Libro{% endif %}
+                </span>
+            </button>
+            
+            <a href="{% url 'gestion_libros' %}" class="btn btn-secondary">
+                Cancelar
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}
