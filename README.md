@@ -1,93 +1,39 @@
-# Proyecto Biblioteca Virtual (Seguridad de Base de Datos)
+# 📚 Neoteca - Sistema de Biblioteca Escolar Seguro
 
-Este proyecto es un sistema de gestión bibliotecaria desarrollado en Django, utilizando **Oracle Database** como motor de base de datos.
+Sistema de gestión bibliotecaria desarrollado con **Django 5** y **Oracle Database 21c**, enfocado en la seguridad de datos, auditoría y roles jerárquicos.
 
-## 🚀 Instalación para Colaboradores
+## 🚀 Características Principales
 
-Sigue estos pasos estrictamente para configurar el entorno local.
+### 🔐 Seguridad y Base de Datos (Oracle 21c)
+* **Arquitectura "Table-per-Type":** Implementación de herencia en SQL (Usuario -> Estudiante/Profesor/Tutor).
+* **Seguridad en Capa de Datos:** El Login y las validaciones críticas se realizan mediante **Stored Procedures** y **Funciones PL/SQL**, no solo en Django.
+* **Auditoría Automática:** Triggers en Oracle que registran cualquier eliminación o cambio sensible en una tabla de auditoría inmutable.
+* **Encriptación:** Datos sensibles protegidos a nivel de base de datos.
+
+### 👥 Módulos por Roles
+1.  **Estudiante:**
+    * Catálogo filtrado por Grado Escolar.
+    * Visor de PDF con **Timer de Lectura** (validación de tiempo real).
+    * Sistema de tareas y progreso.
+2.  **Profesor:**
+    * Gestión de Clase y asignación de tareas.
+    * Monitoreo visual del progreso de sus alumnos.
+3.  **Tutor (Familia):**
+    * Panel exclusivo para monitorear el avance de sus hijos/pupilos.
+4.  **Administrador:**
+    * CRUD de Libros con interfaz moderna (DataTables).
+    * Gestión de usuarios y reportes de seguridad.
+
+## 🛠️ Tecnologías
+
+* **Backend:** Python 3.13, Django 5.2.
+* **Base de Datos:** Oracle Database 21c Express Edition (Docker).
+* **Frontend:** Bootstrap 4, SB Admin 2, JavaScript (AJAX).
+* **Librerías Clave:** `cx_Oracle`, `django-jazzmin`.
+
+## 📦 Instalación y Despliegue
 
 ### 1. Clonar el repositorio
 ```bash
 git clone [https://github.com/Aunnoxd/Proyecto-Seg-base-de-datos.git](https://github.com/Aunnoxd/Proyecto-Seg-base-de-datos.git)
 cd Proyecto-Seg-base-de-datos
-
-
-# Crear entorno
-python -m venv venv
-
-# Activar (Windows)
-venv\Scripts\activate
-# Activar (Linux/Mac)
-source venv/bin/activate
-
-# Instalar dependencias
-pip install -r requirements.txt
-
-
-
-🛠 Configuración de la Base de Datos (Oracle)
-
-Este proyecto requiere Oracle Database XE. La forma recomendada (y la única soportada en este proyecto para Linux/Kali) es usando Docker.
-
-Paso A: Instalar y Ejecutar Oracle en Docker
-
-Ejecuta el siguiente comando para descargar y levantar la base de datos en el puerto 1521.
-
-    Nota: Si estás en Linux y falla la descarga por DNS, revisa tu /etc/docker/daemon.json.
-
-Bash
-
-docker run -d --name oracle-db \
-  -p 1521:1521 -p 5500:5500 \
-  -e ORACLE_PASSWORD=biblioteca_123 \
-  -e ORACLE_CHARACTERSET=AL32UTF8 \
-  gvenzl/oracle-xe
-
-Espera unos 2 minutos hasta que la base de datos arranque. Puedes verificarlo con: docker logs -f oracle-db (Hasta ver "DATABASE IS READY TO USE").
-
-Paso B: Crear el Usuario y Permisos
-
-Una vez lista la base de datos, debemos crear el usuario biblioteca.
-
-    Entra a la consola SQL del contenedor:
-    Bash
-
-docker exec -it oracle-db sqlplus system/biblioteca_123
-
-Copia y pega estos comandos SQL:
-SQL
-
-    CREATE USER biblioteca IDENTIFIED BY biblioteca_123;
-    GRANT CONNECT, RESOURCE, DBA TO biblioteca;
-    ALTER USER biblioteca QUOTA UNLIMITED ON USERS;
-    EXIT;
-
-Paso C: Migraciones de Django
-
-Ahora que la base de datos existe, crea las tablas del sistema:
-Bash
-
-python manage.py migrate
-
-Paso D: Crear Superusuario (Admin)
-
-Para entrar al panel de administración:
-Bash
-
-python manage.py createsuperuser
-
-▶️ Ejecutar el Proyecto
-
-Bash
-
-python manage.py runserver
-
-Visita: http://127.0.0.1:8000
-
-📂 Credenciales por defecto (Desarrollo)
-
-    DB User: biblioteca
-
-    DB Password: biblioteca_123
-
-    DB Port: 1521
