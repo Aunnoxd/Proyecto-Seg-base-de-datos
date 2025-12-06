@@ -28,21 +28,26 @@ def login_view(request):
             try:
                 usuario = Usuario.objects.get(email=email)
                 
-                # 3. GUARDAR EN SESIÓN (Lo más importante)
                 request.session['usuario_id'] = usuario.id_usuario
                 request.session['usuario_rol'] = rol_detectado
                 request.session['usuario_nombre'] = usuario.nombres
 
                 messages.success(request, f"Bienvenido, {usuario.nombres} ({rol_detectado})")
 
-                # 4. Redirección según ROL
+                # --- CORRECCIÓN DE REDIRECCIONES ---
                 if rol_detectado == 'ESTUDIANTE':
-                    return redirect('lista_libros') # O 'estudiante_dashboard' si tienes uno
+                    return redirect('lista_libros')
+                elif rol_detectado == 'TUTOR':
+                    return redirect('panel_tutor')
                 elif rol_detectado == 'PROFESOR':
-                    # return redirect('profesor_dashboard') # A futuro
-                    return redirect('home')
+                    return redirect('mi_clase')
+                
+                # ¡AQUÍ ESTABA EL ERROR!
+                # Antes decía: return redirect('/admin/')
+                # Ahora debe redirigir al nombre de la ruta de tu gestión de libros:
                 elif rol_detectado == 'ADMIN':
-                    return redirect('/admin/')
+                    return redirect('gestion_libros') 
+                
                 else:
                     return redirect('home')
 

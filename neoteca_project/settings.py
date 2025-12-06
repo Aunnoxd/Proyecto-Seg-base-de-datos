@@ -11,21 +11,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+## Cargar variables del archivo .env
+load_dotenv() 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Usar la variable de entorno o un valor por defecto si no existe
+SECRET_KEY = os.getenv('SECRET_KEY', 'clave-secreta-por-defecto')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@y9sx)ntgja8rj7b-_k1$9e&ui&5afi@yijnls8+)*@yki@=(q'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,14 +79,14 @@ WSGI_APPLICATION = 'neoteca_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'localhost:1521/XE',
-        'USER': 'system',
-        'PASSWORD': 'biblioteca_123',
+        # Construimos la cadena de conexión dinámicamente
+        'NAME': f"{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '1521')}/{os.getenv('DB_SERVICE', 'XE')}",
+        'USER': os.getenv('DB_USER', 'system'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'biblioteca_123'),
         'HOST': '',
         'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

@@ -18,41 +18,70 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-# Importamos el Dashboard (principal) del views.py general
-from neoteca.views import principal 
-from neoteca.admin_views import subir_libro
-# Importamos las vistas del estudiante
-from neoteca.estudiante_views import lista_libros, mis_asignaciones, registrar_lectura, registrar_tiempo_ajax, ver_libro_pdf# Importamos la vista del profesor (si ya la creaste)
-from neoteca.profesor_views import mi_clase, asignar_tarea
 from django.conf import settings 
 from django.conf.urls.static import static 
-from neoteca import views
+
+# --- IMPORTACIONES ---
+from neoteca.views import principal, login_view, logout_view
+from neoteca.estudiante_views import (
+    lista_libros, mis_asignaciones, registrar_lectura, 
+    registrar_tiempo_ajax, ver_libro_pdf
+)
+from neoteca.profesor_views import mi_clase, asignar_tarea
 from neoteca.tutor_views import panel_tutor
 from neoteca.views_registry import registro_tutor, registrar_estudiante_por_tutor
 
+# Importamos TODAS las vistas del Admin (CRUD)
+from neoteca.admin_views import (
+    gestion_libros, subir_libro, editar_libro, eliminar_libro
+)
+
 urlpatterns = [
-    # 1. TU RUTA PERSONALIZADA DEBE IR PRIMERO QUE EL ADMIN GENERAL
-    path('admin/subir-libro/', subir_libro, name='subir_libro'), 
+    # ==========================================
+    # 1. ADMINISTRACIÓN NEOTECA (CRUD LIBROS)
+    # ==========================================
+    # ¡ESTA ES LA LÍNEA QUE FALTABA Y CAUSABA EL ERROR!
+    path('admin/gestion-libros/', gestion_libros, name='gestion_libros'),
     
-    # 2. RUTA GENERAL DEL ADMIN (DEBE IR DESPUÉS)
-    path('admin/', admin.site.urls), 
-    
-    # 3. Resto de tus rutas
+    path('admin/subir-libro/', subir_libro, name='subir_libro'),
+    path('admin/editar-libro/<int:id_libro>/', editar_libro, name='editar_libro'),
+    path('admin/eliminar-libro/<int:id_libro>/', eliminar_libro, name='eliminar_libro'),
+
+    # ==========================================
+    # 2. ADMIN GENERAL DE DJANGO
+    # ==========================================
+    path('admin_django/', admin.site.urls), # Cambié a admin_django para no chocar nombres
+
+    # ==========================================
+    # 3. VISTAS GENERALES (LOGIN/HOME)
+    # ==========================================
     path('', principal, name='home'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+
+    # ==========================================
+    # 4. VISTAS DE ESTUDIANTE
+    # ==========================================
     path('libros/', lista_libros, name='lista_libros'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
     path('mis-tareas/', mis_asignaciones, name='mis_asignaciones'),
-    path('profesor/clase/', mi_clase, name='mi_clase'),
-    path('profesor/asignar-tarea/', asignar_tarea, name='asignar_tarea'),
     path('libros/registrar/<int:libro_id>/', registrar_lectura, name='registrar_lectura'), 
     path('libros/leer/<int:id_libro>/', ver_libro_pdf, name='ver_libro_pdf'),
     path('api/guardar-tiempo/', registrar_tiempo_ajax, name='registrar_tiempo_ajax'),
+
+    # ==========================================
+    # 5. VISTAS DE PROFESOR
+    # ==========================================
+    path('profesor/clase/', mi_clase, name='mi_clase'),
+    path('profesor/asignar-tarea/', asignar_tarea, name='asignar_tarea'),
+
+    # ==========================================
+    # 6. VISTAS DE TUTOR Y REGISTRO
+    # ==========================================
     path('tutor/mi-panel/', panel_tutor, name='panel_tutor'),
     path('registro/tutor/', registro_tutor, name='registro_tutor'),
     path('tutor/inscribir-estudiante/', registrar_estudiante_por_tutor, name='registrar_estudiante'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
