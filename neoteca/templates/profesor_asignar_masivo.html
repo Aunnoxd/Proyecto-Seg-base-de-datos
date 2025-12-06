@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-gradient-primary">
+            <h6 class="m-0 font-weight-bold text-white">
+                <i class="fas fa-rocket"></i> Asignación Masiva (Procedimiento Almacenado)
+            </h6>
+        </div>
+        <div class="card-body">
+            
+            <div class="alert alert-info border-left-info" role="alert">
+                <i class="fas fa-info-circle"></i> 
+                Esta herramienta utiliza un <strong>Procedimiento Almacenado de Oracle</strong> para asignar tareas a todo un curso en milisegundos.
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="selectLibro" class="font-weight-bold text-gray-800">1. Selecciona el Libro:</label>
+                        <select name="libro" id="selectLibro" class="form-control" required>
+                            <option value="" selected disabled>-- Elige un libro --</option>
+                            {% for l in libros %}
+                                <option value="{{ l.id_libro }}" data-grado="{{ l.id_grado.id_grado }}">
+                                    {{ l.titulo }} (Sugerido: {{ l.id_grado.nombre }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="selectGrado" class="font-weight-bold text-gray-800">2. Grado Destino:</label>
+                        <div class="input-group">
+                            <select name="grado" id="selectGrado" class="form-control" required>
+                                <option value="" selected disabled>-- Se seleccionará automáticamente --</option>
+                                {% for g in grados %}
+                                    <option value="{{ g.id_grado }}">{{ g.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-success text-white" id="iconoCheck" style="display:none;">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">
+                            El sistema pre-selecciona el grado del libro, pero puedes cambiarlo manualmente si deseas.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold text-gray-800">3. Instrucciones para la Clase:</label>
+                    <textarea name="descripcion" class="form-control" rows="3" placeholder="Ej: Leer el capítulo 1 y 2 para el lunes..." required></textarea>
+                </div>
+
+                <hr>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    <i class="fas fa-paper-plane"></i> Ejecutar Asignación Masiva
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Escuchar cuando el profesor cambie el libro
+    document.getElementById('selectLibro').addEventListener('change', function() {
+        
+        // 2. Obtener la opción seleccionada
+        var opcionSeleccionada = this.options[this.selectedIndex];
+        
+        // 3. Leer el atributo 'data-grado' (el ID del grado sugerido)
+        var idGradoSugerido = opcionSeleccionada.getAttribute('data-grado');
+        
+        // 4. Cambiar el valor del select de Grado automáticamente
+        var selectGrado = document.getElementById('selectGrado');
+        
+        if (idGradoSugerido) {
+            selectGrado.value = idGradoSugerido;
+            
+            // Efecto visual: Resaltar en verde para confirmar
+            selectGrado.style.backgroundColor = "#e8f5e9"; // Verde claro
+            document.getElementById('iconoCheck').style.display = 'flex';
+            
+            // Volver al color normal después de 1 segundo
+            setTimeout(function() {
+                selectGrado.style.backgroundColor = "";
+            }, 1000);
+        }
+    });
+</script>
+
+{% endblock %}

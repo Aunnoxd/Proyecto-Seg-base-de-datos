@@ -3,7 +3,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Sum
-from .models import Usuario, Lee, Asignacion
+from django.db import connection
+# Importamos los modelos necesarios
+from .models import Usuario, Lee, Asignacion, Grado, Libro
 from .forms_book import AsignacionForm
 
 def mi_clase(request):
@@ -87,3 +89,28 @@ def asignar_tarea(request):
         'profesor': profesor_actual
     }
     return render(request, 'asignar_tarea.html', contexto)
+
+def asignar_masivo(request):
+    # Solo profesores
+    if request.session.get('usuario_rol') != 'PROFESOR':
+        return redirect('home')
+
+    if request.method == 'POST':
+        id_libro = request.POST.get('libro')
+        id_grado = request.POST.get('grado')
+        descripcion = request.POST.get('descripcion')
+        id_profe = request.session.get('usuario_id')
+
+        try:
+            # LLAMADA AL PROCEDIMIENTO ALMACENADO
+            with connection.cursor() as cursor:
+                cursor.callproc('asignar_tarea_grado', [id_profe, id_libro, id_grado, descripcion])
+            
+            messages.success(request, "Tarea asignada a todo el grado exitosamente.")
+        except Exception as e:
+            messages.error(request, f"Error al ejecutar procedimiento: {e}")
+
+    # Datos para el formulario
+    libros = Libro.objects.all()
+    grados = Grado.objects.all()
+    return render(request, 'profesor_asignar_masivo.html', {'libros': libros, 'grados': grados})

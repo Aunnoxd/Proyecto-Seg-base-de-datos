@@ -6,7 +6,8 @@ from django.contrib import messages
 from .models import (
     Grado, Materia, Usuario, Libro, Asignacion, Lee, 
     Profesor, Estudiante, Tutor, 
-    RankingLectores, ReporteProfesores, ReporteSeguridad
+    RankingLectores, ReporteProfesores, ReporteSeguridad, 
+    ReporteTareasPendientes, VistaUsuariosSegura
 )
 
 # --- ACCIÓN PERSONALIZADA: Promover Estudiantes (SP Oracle) ---
@@ -132,6 +133,25 @@ class ReporteSeguridadAdmin(admin.ModelAdmin):
     list_display = ('fecha', 'accion', 'usuario_afectado', 'detalle', 'usuario_db')
     list_filter = ('accion', 'usuario_db')
     ordering = ('-fecha',)
+    def has_add_permission(self, request): return False
+    def has_delete_permission(self, request, obj=None): return False
+    def has_change_permission(self, request, obj=None): return False
+
+@admin.register(ReporteTareasPendientes)
+class ReporteTareasAdmin(admin.ModelAdmin):
+    # Usamos 'fecha_asignacion' porque así le pusimos en el modelo
+    list_display = ('tutor', 'estudiante', 'libro_pendiente', 'fecha_asignacion')
+    list_filter = ('tutor', 'fecha_asignacion')
+    
+    def has_add_permission(self, request): return False
+    def has_delete_permission(self, request, obj=None): return False
+    def has_change_permission(self, request, obj=None): return False
+    
+@admin.register(VistaUsuariosSegura)
+class VistaSeguraAdmin(admin.ModelAdmin):
+    list_display = ('id_usuario', 'nombres', 'rol', 'email_anonimizado', 'carnet_oculto')
+    list_filter = ('rol',)
+    search_fields = ('nombres',)
     def has_add_permission(self, request): return False
     def has_delete_permission(self, request, obj=None): return False
     def has_change_permission(self, request, obj=None): return False

@@ -22,12 +22,12 @@ from django.conf import settings
 from django.conf.urls.static import static 
 
 # --- IMPORTACIONES ---
-from neoteca.views import principal, login_view, logout_view
+from neoteca.views import principal, login_view, logout_view, alerta_seguridad
 from neoteca.estudiante_views import (
     lista_libros, mis_asignaciones, registrar_lectura, 
     registrar_tiempo_ajax, ver_libro_pdf
 )
-from neoteca.profesor_views import mi_clase, asignar_tarea
+from neoteca.profesor_views import mi_clase, asignar_tarea, asignar_masivo
 from neoteca.tutor_views import panel_tutor
 from neoteca.views_registry import registro_tutor, registrar_estudiante_por_tutor
 
@@ -37,6 +37,10 @@ from neoteca.admin_views import (
 )
 
 urlpatterns = [
+    # ==========================================
+    # 0. TRAMPA DE SEGURIDAD (HONEYPOT)
+    # ==========================================
+    path('admin/', alerta_seguridad, name='alerta_seguridad'),
     # ==========================================
     # 1. ADMINISTRACIÓN NEOTECA (CRUD LIBROS)
     # ==========================================
@@ -73,7 +77,8 @@ urlpatterns = [
     # ==========================================
     path('profesor/clase/', mi_clase, name='mi_clase'),
     path('profesor/asignar-tarea/', asignar_tarea, name='asignar_tarea'),
-
+    path('profesor/asignar-masivo/', asignar_masivo, name='asignar_masivo'),
+    
     # ==========================================
     # 6. VISTAS DE TUTOR Y REGISTRO
     # ==========================================

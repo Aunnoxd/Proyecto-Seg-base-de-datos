@@ -128,3 +128,11 @@ def principal(request):
         'usuario_nombre': usuario_nombre
     }
     return render(request, 'index.html', contexto)
+
+#Alerta de seguridad de link
+def alerta_seguridad(request):
+    # Opcional: Podrías registrar aquí en tu BD que alguien intentó entrar
+    contexto = {
+        'ip_usuario': request.META.get('REMOTE_ADDR')
+    }
+    return render(request, 'security_alert.html', contexto)

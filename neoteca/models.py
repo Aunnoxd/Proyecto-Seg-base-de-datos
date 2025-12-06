@@ -211,3 +211,35 @@ class ReporteSeguridad(models.Model):
         db_table = 'VISTA_LOG_SEGURIDAD'
         verbose_name = 'Log de Seguridad'
         verbose_name_plural = 'Logs de Seguridad'
+
+
+# --- MODELOS BASADOS EN VISTAS SQL (REPORTES) ---
+
+class ReporteTareasPendientes(models.Model):
+    # Ahora usamos 'id_reporte' que creamos en la vista
+    id_reporte = models.IntegerField(primary_key=True) 
+    tutor = models.CharField(max_length=100)
+    estudiante = models.CharField(max_length=100)
+    libro_pendiente = models.CharField(max_length=200)
+    # Django leerá la columna 'fecha_asignacion' de la vista
+    fecha_asignacion = models.DateTimeField()
+
+    class Meta:
+        managed = False  # No tocar la BD
+        db_table = 'REPORTE_TAREAS_PENDIENTES'
+        verbose_name = 'Reporte: Tarea Pendiente'
+        verbose_name_plural = 'Reporte: Tareas Pendientes'
+
+class VistaUsuariosSegura(models.Model):
+    id_usuario = models.IntegerField(primary_key=True)
+    nombres = models.CharField(max_length=100)
+    rol = models.CharField(max_length=20)
+    # Estos campos vienen enmascarados desde Oracle (****)
+    email_anonimizado = models.CharField(max_length=100)
+    carnet_oculto = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'VISTA_USUARIOS_SEGURA'
+        verbose_name = 'Auditoría: Usuario Seguro'
+        verbose_name_plural = 'Auditoría: Usuarios Seguros'
