@@ -4,81 +4,120 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
 from django.contrib.auth import logout
-from .models import Libro, Usuario
+# Importamos los modelos necesarios
+from .models import Libro, Usuario, Estudiante, Tutor
+# Importamos lo necesario para el login automático de Django Admin
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login 
-# --- VISTA DE LOGIN (CON ORACLE) ---
+
+# --- VISTA DE LOGIN (CON DOBLE LÓGICA) ---
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        tipo_login = request.POST.get('tipo_login') # Recibimos 'general' o 'estudiante' del HTML
 
-        rol_detectado = None
-        
-        try:
-            # 1. Validación contra ORACLE (Tu seguridad real)
-            with connection.cursor() as cursor:
-                rol_detectado = cursor.callfunc('verificar_login', str, [email, password])
-        except Exception as e:
-            messages.error(request, f"Error de conexión: {e}")
-            return render(request, 'login.html')
-
-        if rol_detectado:
+        # =======================================================
+        # OPCIÓN A: LOGIN GENERAL (Email + Password)
+        # Para Admin, Tutor y Profesor
+        # =======================================================
+        if tipo_login == 'general':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            rol_detectado = None
+            
             try:
-                usuario = Usuario.objects.get(email=email)
+                # 1. Validación contra ORACLE
+                with connection.cursor() as cursor:
+                    rol_detectado = cursor.callfunc('verificar_login', str, [email, password])
+            except Exception as e:
+                messages.error(request, f"Error de conexión: {e}")
+                return render(request, 'login.html')
+
+            if rol_detectado:
+                try:
+                    usuario = Usuario.objects.get(email=email)
+                    
+                    # Guardamos sesión personalizada
+                    crear_sesion_personalizada(request, usuario, rol_detectado)
+
+                    # --- LÓGICA ESPECIAL PARA ADMIN (TU PUENTE MÁGICO) ---
+                    if rol_detectado == 'ADMIN':
+                        # Buscamos un superusuario de Django para "prestarle" la sesión
+                        superuser_django = User.objects.filter(is_superuser=True).first()
+                        
+                        if superuser_django:
+                            auth_login(request, superuser_django) # Login silencioso en Django Admin
+                        
+                        return redirect('gestion_libros') # Tu panel personalizado
+                    
+                    # --- REDIRECCIONES NORMALES ---
+                    elif rol_detectado == 'TUTOR':
+                        return redirect('panel_tutor')
+                    elif rol_detectado == 'PROFESOR':
+                        return redirect('mi_clase')
+                    elif rol_detectado == 'ESTUDIANTE': # Por si un estudiante entra con email
+                        return redirect('lista_libros')
+                    else:
+                        return redirect('home')
+
+                except Usuario.DoesNotExist:
+                    messages.error(request, "Error: Usuario en Oracle pero no en Django.")
+            else:
+                messages.error(request, "Credenciales incorrectas.")
+
+        # =======================================================
+        # OPCIÓN B: LOGIN ESTUDIANTE (Nombre + Código Tutor)
+        # Modo Niño (Sin Email)
+        # =======================================================
+        elif tipo_login == 'estudiante':
+            nombre_estudiante = request.POST.get('nombre')
+            codigo_tutor = request.POST.get('codigo_tutor')
+            password_est = request.POST.get('password')
+
+            try:
+                # 1. Buscar al Tutor por su código único (TUT-XXXX)
+                tutor_padre = Tutor.objects.get(codigo_vinculacion=codigo_tutor)
                 
-                # Guardamos tu sesión personalizada
-                request.session['usuario_id'] = usuario.id_usuario
-                request.session['usuario_rol'] = rol_detectado
-                request.session['usuario_nombre'] = usuario.nombres
+                # 2. Buscar al Estudiante vinculado a ese tutor
+                # Buscamos que el nombre coincida (case insensitive) y la contraseña sea correcta
+                estudiante = Estudiante.objects.select_related('id_usuario').filter(
+                    id_tutor=tutor_padre,
+                    id_usuario__nombres__icontains=nombre_estudiante, 
+                    id_usuario__password=password_est 
+                ).first()
 
-                messages.success(request, f"Bienvenido, {usuario.nombres}")
-
-                # --- REDIRECCIÓN Y PUENTE AL ADMIN ---
-                if rol_detectado == 'ESTUDIANTE':
+                if estudiante:
+                    # ¡Login Exitoso del Niño!
+                    usuario_real = estudiante.id_usuario
+                    crear_sesion_personalizada(request, usuario_real, 'ESTUDIANTE')
                     return redirect('lista_libros')
-                elif rol_detectado == 'TUTOR':
-                    return redirect('panel_tutor')
-                elif rol_detectado == 'PROFESOR':
-                    return redirect('mi_clase')
-                
-                elif rol_detectado == 'ADMIN':
-                    # =====================================================
-                    # EL TRUCO: Autologuear en Django Admin
-                    # =====================================================
-                    # Buscamos un superusuario de Django para "prestarle" la sesión
-                    # Asegúrate de haber creado uno con 'python manage.py createsuperuser'
-                    superuser_django = User.objects.filter(is_superuser=True).first()
-                    
-                    if superuser_django:
-                        # Esto crea la sesión para /admin_django/ automáticamente
-                        auth_login(request, superuser_django) 
-                    
-                    return redirect('gestion_libros') # Tu panel personalizado
-                
                 else:
-                    return redirect('home')
+                    messages.error(request, "Datos incorrectos. Verifica tu nombre o contraseña.")
 
-            except Usuario.DoesNotExist:
-                messages.error(request, "Error: Usuario en Oracle pero no en Django.")
-        else:
-            messages.error(request, "Credenciales incorrectas.")
+            except Tutor.DoesNotExist:
+                messages.error(request, "El código de Tutor no existe.")
+            except Exception as e:
+                messages.error(request, f"Error en login de estudiante: {e}")
 
     return render(request, 'login.html')
 
+# --- FUNCIÓN AUXILIAR PARA NO REPETIR CÓDIGO ---
+def crear_sesion_personalizada(request, usuario, rol):
+    request.session['usuario_id'] = usuario.id_usuario
+    request.session['usuario_rol'] = rol
+    request.session['usuario_nombre'] = usuario.nombres
+    messages.success(request, f"Bienvenido, {usuario.nombres}")
+
 # --- VISTA DE LOGOUT ---
 def logout_view(request):
-    request.session.flush() # Borra toda la cookie de sesión
+    request.session.flush() 
+    logout(request) # Cierra también la sesión de Django Admin si existía
     messages.info(request, "Sesión cerrada correctamente.")
     return redirect('login')
 
 # --- VISTA PRINCIPAL (HOME) ---
 def principal(request):
-    # Verificamos si hay sesión activa para cambiar el menú en el HTML
     usuario_nombre = request.session.get('usuario_nombre')
-
     total_libros = Libro.objects.count()
-    # Filtramos usando el campo 'rol' del modelo Usuario
     total_estudiantes = Usuario.objects.filter(rol='ESTUDIANTE').count()
     total_profesores = Usuario.objects.filter(rol='PROFESOR').count()
     
@@ -88,5 +127,4 @@ def principal(request):
         'total_profesores': total_profesores,
         'usuario_nombre': usuario_nombre
     }
-    
     return render(request, 'index.html', contexto)

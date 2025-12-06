@@ -1,5 +1,13 @@
 from django.db import models
 from django.utils import timezone
+import random
+import string
+
+# --- FUNCIÓN AUXILIAR PARA GENERAR CÓDIGO ---
+def generar_codigo_tutor():
+    # Genera algo como: TUT-4829
+    numeros = ''.join(random.choices(string.digits, k=4))
+    return f"TUT-{numeros}"
 
 # 1. TABLA GRADO
 class Grado(models.Model):
@@ -76,10 +84,10 @@ class Profesor(models.Model):
 
 class Tutor(models.Model):
     id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column='id_usuario')
-    codigo_vinculacion = models.CharField(max_length=20, unique=True, null=True, blank=True)
+    # Agregamos el campo nuevo con la función generadora
+    codigo_vinculacion = models.CharField(max_length=20, unique=True, default=generar_codigo_tutor)
     cuenta_bancaria = models.CharField(max_length=100, null=True, blank=True)
-    ingreso_mensual = models.CharField(max_length=100, null=True, blank=True)
-
+    
     class Meta:
         db_table = 'TUTOR'
 

@@ -1,87 +1,117 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Neoteca - Login</title>
-    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acceso Neoteca</title>
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <style>
+        .nav-pills .nav-link.active {
+            background-color: #4e73df;
+            color: white;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .nav-pills .nav-link {
+            color: #5a5c69;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e3e6f0;
+            margin: 0 5px;
+        }
+        .icon-big { font-size: 2rem; display: block; margin-bottom: 10px; }
+    </style>
 </head>
-
 <body class="bg-gradient-primary">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image" 
-                                 style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=600&q=80'); background-size: cover;">
-                            </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5" style="border-radius: 20px;">
+                <div class="card-body p-0">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Bienvenido a NEOTECA</h1>
+                            <p class="mb-4">Selecciona cómo quieres ingresar:</p>
+                        </div>
+
+                        <ul class="nav nav-pills nav-fill mb-4" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab">
+                                    <i class="fas fa-user-tie icon-big"></i>
+                                    Tutor/ Docente / Admin
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-student-tab" data-toggle="pill" href="#pills-student" role="tab">
+                                    <i class="fas fa-child icon-big"></i>
+                                    Soy Estudiante
+                                </a>
+                            </li>
+                        </ul>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="tab-content" id="pills-tabContent">
                             
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido a Neoteca</h1>
+                            <div class="tab-pane fade show active" id="pills-general" role="tabpanel">
+                                <form class="user" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tipo_login" value="general">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user" name="email" placeholder="Correo Electrónico..." required>
                                     </div>
-
-                                    {% if messages %}
-                                        {% for message in messages %}
-                                            <div class="alert alert-{{ message.tags }} text-center">
-                                                {{ message }}
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
-
-                                    <form class="user" method="POST" action="{% url 'login' %}">
-                                        {% csrf_token %}
-                                        
-                                        <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" name="email" 
-                                                placeholder="Ingresa tu correo..." required>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" name="password" 
-                                                placeholder="Contraseña" required>
-                                        </div>
-                                        
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Iniciar Sesión
-                                        </button>
-
-                                        <div class="text-center mt-2">
-                                            <a class="small" href="{% url 'registro_tutor' %}">¿Eres padre de familia? Regístrate aquí</a>
-                                        </div>
-                                    </form>
-                                    
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="{% url 'lista_libros' %}">Entrar como Invitado (Ver Libros)</a>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user" name="password" placeholder="Contraseña" required>
                                     </div>
-                                    <div class="text-center mt-2">
-                                        <small class="text-muted">Autenticación Segura con Oracle 21c</small>
-                                    </div>
-                                </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Ingresar
+                                    </button>
+                                </form>
                             </div>
+
+                            <div class="tab-pane fade" id="pills-student" role="tabpanel">
+                                <div class="alert alert-info text-center small">
+                                    <i class="fas fa-info-circle"></i> Pide a tu tutor su código (Ej: TUT-1111)
+                                </div>
+                                <form class="user" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tipo_login" value="estudiante">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" name="nombre" placeholder="Tu Nombre (Ej: Juan)" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user" name="codigo_tutor" placeholder="Código del Tutor (TUT-xxxx)" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user" name="password" placeholder="Tu Contraseña" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-user btn-block">
+                                        Entrar a mi Clase
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                        
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" href="{% url 'registro_tutor' %}">¿Eres un tutor? Regístrate aquí</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
