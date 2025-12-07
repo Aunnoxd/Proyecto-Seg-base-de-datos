@@ -41,7 +41,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab">
                                     <i class="fas fa-user-tie icon-big"></i>
-                                    Tutor / Docente /Administrador
+                                    Tutor / Docente / Admin
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -70,7 +70,7 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="tipo_login" value="general">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" name="email" placeholder="Correo Electrónico..." required>
+                                        <input type="text" class="form-control form-control-user" name="email" placeholder="Correo o Usuario..." required>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user" name="password" placeholder="Contraseña" required>

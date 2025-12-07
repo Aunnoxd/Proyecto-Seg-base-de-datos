@@ -3,6 +3,7 @@ from django.utils import timezone
 import random
 import string
 
+
 # --- FUNCIÓN AUXILIAR PARA GENERAR CÓDIGO ---
 def generar_codigo_tutor():
     # Genera algo como: TUT-4829
@@ -222,3 +223,14 @@ class VistaUsuariosSegura(models.Model):
         db_table = 'VISTA_USUARIOS_SEGURA'
         verbose_name = 'Auditoría: Usuario Seguro'
         verbose_name_plural = 'Auditoría: Usuarios Seguros'
+
+
+# --- AL FINAL DE NEOTECA/MODELS.PY ---
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+
+@receiver(post_save, sender=User)
+def activar_staff_automaticamente(sender, instance, created, **kwargs):
+    if created and not instance.is_superuser:
+        User.objects.filter(pk=instance.pk).update(is_staff=True)
