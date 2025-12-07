@@ -1,48 +1,69 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">Catálogo de Libros</h1>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Catálogo de Libros</h1>
+    <a href="{% url 'subir_libro' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Subir Nuevo Libro
+    </a>
+</div>
 
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Libros Disponibles</h6>
+    <div class="card-header py-3 bg-gradient-primary">
+        <h6 class="m-0 font-weight-bold text-white">Inventario de Contenido</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
+            <table class="table table-bordered table-hover align-middle" id="dataTable" width="100%" cellspacing="0">
+                <thead class="thead-light">
                     <tr>
+                        <th style="width: 10%; text-align: center;">Portada</th>
                         <th>Título</th>
                         <th>Autor</th>
-                        <th>Categoría</th>
-                        <th>Descarga / Archivo</th>
-                        <th>Fecha Registro</th>
+                        <th>Materia</th> <th style="text-align: center;">PDF</th>
+                        <th>Fecha</th>
+                        <th style="text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for libro in libros %}
                     <tr>
-                        <td>{{ libro.titulo }}</td>
-                        <td>{{ libro.autor }}</td>
-                        <td>
-                            <span class="badge badge-secondary">{{ libro.categoria }}</span>
-                        </td>
-                        <td>
-                            {% if libro.archivo_pdf %}
-                                <a href="{{ libro.archivo_pdf.url }}" target="_blank" class="btn btn-sm btn-info">
-                                    <i class="fas fa-download"></i> Descargar PDF
-                                </a>
+                        <td class="text-center align-middle">
+                            {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" style="height: 60px; width: auto; border-radius: 5px; border: 1px solid #ddd;">
                             {% else %}
-                                <span class="text-danger">Archivo no subido</span>
+                                <div class="btn btn-circle btn-sm btn-light border">
+                                    <i class="fas fa-image text-gray-400"></i>
+                                </div>
                             {% endif %}
                         </td>
-                        <td>{{ libro.created_at|date:"d/m/Y" }}</td>
+                        <td class="align-middle font-weight-bold">{{ libro.titulo }}</td>
+                        <td class="align-middle">{{ libro.autor }}</td>
+                        <td class="align-middle">
+                            <span class="badge badge-info">{{ libro.materia.nombre|default:"General" }}</span>
+                        </td>
+                        <td class="align-middle text-center">
+                            {% if libro.archivo_pdf %}
+                                <a href="{{ libro.archivo_pdf.url }}" target="_blank" class="btn btn-sm btn-circle btn-danger" title="Ver PDF">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            {% else %}
+                                <span class="text-muted small">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">{{ libro.created_at|date:"d/m/Y" }}</td>
+                        <td class="align-middle text-center">
+                            <a href="{% url 'editar_libro' libro.id_libro %}" class="btn btn-warning btn-circle btn-sm" title="Editar">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{% url 'eliminar_libro' libro.id_libro %}" class="btn btn-danger btn-circle btn-sm" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar este libro?');">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
-
         </div>
     </div>
 </div>

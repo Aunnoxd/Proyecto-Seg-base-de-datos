@@ -6,8 +6,37 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Panel de Familia / Tutor</h1>
     <a href="{% url 'registrar_estudiante' %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-    <i class="fas fa-user-plus fa-sm text-white-50"></i> Inscribir Hijo
+        <i class="fas fa-user-plus fa-sm text-white-50"></i> Inscribir Nuevo Hijo
     </a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Código para Inscribir Hijos
+                        </div>
+                        <div class="h2 mb-0 font-weight-bold text-gray-800">
+                            {% if tutor.codigo_vinculacion %}
+                                {{ tutor.codigo_vinculacion }}
+                            {% else %}
+                                <span class="text-danger small">No generado</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-muted small mt-2 mb-0">
+                            <i class="fas fa-info-circle"></i> Entregue este código a su hijo para que inicie sesión.
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-key fa-4x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -34,7 +63,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                 <thead class="thead-light">
                     <tr>
                         <th style="width: 25%">Estudiante</th>
@@ -49,15 +78,15 @@
                     <tr>
                         <td class="align-middle font-weight-bold text-gray-800">
                             <div class="d-flex align-items-center">
-                                <div class="btn-circle btn-sm bg-gray-200 mr-2">
-                                    <i class="fas fa-user"></i>
+                                <div class="btn-circle btn-sm bg-info mr-2 text-white">
+                                    <i class="fas fa-user-graduate"></i>
                                 </div>
                                 {{ p.nombres }} {{ p.apellidos }}
                             </div>
                         </td>
                         
                         <td class="align-middle">
-                            <span class="badge badge-light border">{{ p.grado }}</span>
+                            <span class="badge badge-secondary">{{ p.grado }}</span>
                         </td>
                         
                         <td class="align-middle text-center">
@@ -72,8 +101,8 @@
                             
                             <div class="progress progress-sm">
                                 <div class="progress-bar bg-success" role="progressbar" 
-                                     data-width="{{ p.porcentaje }}"
-                                     aria-valuenow="{{ p.porcentaje }}" aria-valuemin="0" aria-valuemax="100">
+                                    data-porcentaje="{{ p.porcentaje }}"
+                                    aria-valuenow="{{ p.porcentaje }}" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>
                         </td>
@@ -87,8 +116,11 @@
                     {% empty %}
                     <tr>
                         <td colspan="5" class="text-center py-5 text-muted">
-                            <i class="fas fa-info-circle mb-2"></i><br>
-                            No se encontraron estudiantes vinculados a tu cuenta.
+                            <i class="fas fa-folder-open fa-3x mb-3 text-gray-300"></i>
+                            <p>No se encontraron estudiantes vinculados a tu cuenta.</p>
+                            <a href="{% url 'registrar_estudiante' %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Inscribir ahora
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -97,4 +129,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Animación de barras de progreso
+    document.addEventListener("DOMContentLoaded", function() {
+        var barras = document.querySelectorAll('.progress-bar');
+        barras.forEach(function(barra) {
+            var porcentaje = barra.getAttribute('data-porcentaje');
+            barra.style.width = porcentaje + '%';
+        });
+    });
+</script>
 {% endblock %}

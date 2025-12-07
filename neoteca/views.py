@@ -63,10 +63,8 @@ def login_view(request):
                     messages.error(request, "Error: Usuario en Oracle pero no en Django.")
             else:
                 messages.error(request, "Credenciales incorrectas.")
-
-        # =======================================================
+# =======================================================
         # OPCIÓN B: LOGIN ESTUDIANTE (Nombre + Código Tutor)
-        # Modo Niño (Sin Email)
         # =======================================================
         elif tipo_login == 'estudiante':
             nombre_estudiante = request.POST.get('nombre')
@@ -74,29 +72,42 @@ def login_view(request):
             password_est = request.POST.get('password')
 
             try:
-                # 1. Buscar al Tutor por su código único (TUT-XXXX)
+                # 1. Buscar al Tutor por su código único
                 tutor_padre = Tutor.objects.get(codigo_vinculacion=codigo_tutor)
                 
-                # 2. Buscar al Estudiante vinculado a ese tutor
-                # Buscamos que el nombre coincida (case insensitive) y la contraseña sea correcta
+                # 2. Buscar al Estudiante (SOLO POR NOMBRE Y TUTOR)
+                # Quitamos la contraseña del filtro porque está encriptada
                 estudiante = Estudiante.objects.select_related('id_usuario').filter(
                     tutor=tutor_padre,
-                    id_usuario__nombres__icontains=nombre_estudiante, 
-                    id_usuario__password=password_est 
+                    id_usuario__nombres__icontains=nombre_estudiante 
                 ).first()
 
                 if estudiante:
-                    # ¡Login Exitoso del Niño!
-                    usuario_real = estudiante.id_usuario
-                    crear_sesion_personalizada(request, usuario_real, 'ESTUDIANTE')
-                    return redirect('lista_libros')
+                    # 3. VERIFICACIÓN SEGURA CON ORACLE
+                    # Recuperamos el email interno del estudiante para validar su password
+                    email_interno = estudiante.id_usuario.email
+                    
+                    rol_detectado = None
+                    try:
+                        with connection.cursor() as cursor:
+                            # Usamos la misma función de seguridad que el login normal
+                            rol_detectado = cursor.callfunc('verificar_login', str, [email_interno, password_est])
+                    except Exception:
+                        pass # Si falla Oracle, rol_detectado seguirá siendo None
+
+                    if rol_detectado == 'ESTUDIANTE':
+                        # ¡Contraseña Correcta!
+                        crear_sesion_personalizada(request, estudiante.id_usuario, 'ESTUDIANTE')
+                        return redirect('lista_libros')
+                    else:
+                        messages.error(request, "Contraseña incorrecta.")
                 else:
-                    messages.error(request, "Datos incorrectos. Verifica tu nombre o contraseña.")
+                    messages.error(request, "No se encontró un estudiante con ese nombre vinculado a este Tutor.")
 
             except Tutor.DoesNotExist:
                 messages.error(request, "El código de Tutor no existe.")
             except Exception as e:
-                messages.error(request, f"Error en login de estudiante: {e}")
+                messages.error(request, f"Error del sistema: {e}")
 
     return render(request, 'login.html')
 

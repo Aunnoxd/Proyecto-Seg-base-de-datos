@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import connection
 # Importamos los modelos necesarios
-from .models import Usuario, Lee, Asignacion, Grado, Libro, Materia
+from .models import Usuario, Lee, Asignacion, Grado, Libro, Materia, Profesor
 from .forms_book import AsignacionForm
 
 # --- VISTA 1: MI CLASE (PROGRESO) ---
@@ -12,7 +12,8 @@ def mi_clase(request):
     # Verificamos sesión de profesor
     if request.session.get('usuario_rol') != 'PROFESOR':
         return redirect('home')
-
+    # 1. Obtener datos del profesor para mostrar su perfil
+    profesor_actual = Profesor.objects.get(id_usuario=request.session.get('usuario_id'))
     # Traemos estudiantes ordenados por grado y apellido
     estudiantes = Usuario.objects.filter(rol='ESTUDIANTE').select_related('estudiante__grado').order_by('estudiante__grado__nombre', 'apellidos')
     
@@ -41,6 +42,7 @@ def mi_clase(request):
         })
 
     contexto = {
+        'profesor': profesor_actual,
         'progreso_clase': progreso_clase,
     }
     return render(request, 'mi_clase.html', contexto)

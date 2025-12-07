@@ -2,24 +2,31 @@ from django import forms
 from .models import Libro, Asignacion, Grado, Materia
 
 # --- FORMULARIO PARA SUBIR/EDITAR LIBROS ---
+# neoteca/forms_book.py
+
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        # CORRECCIÓN: Quitamos 'categoria' y ponemos 'materia'
-        fields = ['titulo', 'autor', 'materia', 'grado', 'tiempo_estimado', 'archivo_pdf', 'descripcion']
+        # AGREGAMOS 'portada' A LA LISTA
+        fields = ['titulo', 'autor', 'materia', 'grado', 'tiempo_estimado', 'portada', 'archivo_pdf', 'descripcion']
         
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título del libro'}),
             'autor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Autor'}),
-            'materia': forms.Select(attrs={'class': 'form-control'}), # Ahora es un Dropdown de Materias
+            'materia': forms.Select(attrs={'class': 'form-control'}),
             'grado': forms.Select(attrs={'class': 'form-control'}),
-            'tiempo_estimado': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minutos estimados (Ej: 30)'}),
+            'tiempo_estimado': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minutos'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            
+            # WIDGET PARA LA PORTADA
+            'portada': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            
             'archivo_pdf': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
         labels = {
             'materia': 'Asignatura / Materia',
-            'tiempo_estimado': 'Tiempo de Lectura (Minutos)'
+            'tiempo_estimado': 'Tiempo de Lectura (Minutos)',
+            'portada': 'Imagen de Portada (Opcional)'
         }
 
 # --- FORMULARIO PARA ASIGNAR TAREAS ---

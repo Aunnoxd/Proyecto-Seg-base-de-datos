@@ -1,20 +1,22 @@
-<!--profesor_asignar_masivo-->
-
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">Gestión de Tareas</h1>
+
     <div class="card shadow mb-4">
         <div class="card-header py-3 bg-gradient-primary">
             <h6 class="m-0 font-weight-bold text-white">
-                <i class="fas fa-rocket"></i> Asignación Masiva (Procedimiento Almacenado)
+                <i class="fas fa-rocket"></i> Asignación Masiva (Procedimiento Oracle)
             </h6>
         </div>
+        
         <div class="card-body">
             
             <div class="alert alert-info border-left-info" role="alert">
                 <i class="fas fa-info-circle"></i> 
-                Esta herramienta utiliza un <strong>Procedimiento Almacenado de Oracle</strong> para asignar tareas a todo un curso en milisegundos.
+                Esta herramienta envía la tarea a <strong>TODOS</strong> los estudiantes del grado seleccionado instantáneamente.
             </div>
 
             <form method="post">
@@ -23,11 +25,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="selectLibro" class="font-weight-bold text-gray-800">1. Selecciona el Libro:</label>
-                        <select name="libro" id="selectLibro" class="form-control" required>
+                        <select name="libro" id="selectLibro" class="form-control border-left-primary" required>
                             <option value="" selected disabled>-- Elige un libro --</option>
                             {% for l in libros %}
                                 <option value="{{ l.id_libro }}" data-grado="{{ l.grado.id_grado }}">
-                                    {{ l.titulo }} (Sugerido: {{ l.grado.nombre }})
+                                    {{ l.titulo }} (Nivel: {{ l.grado.nombre }})
                                 </option>
                             {% endfor %}
                         </select>
@@ -49,7 +51,7 @@
                             </div>
                         </div>
                         <small class="form-text text-muted">
-                            El sistema pre-selecciona el grado del libro, pero puedes cambiarlo manualmente si deseas.
+                            El sistema pre-selecciona el grado del libro.
                         </small>
                     </div>
                 </div>
@@ -60,36 +62,41 @@
                 </div>
 
                 <hr>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
-                    <i class="fas fa-paper-plane"></i> Ejecutar Asignación Masiva
-                </button>
-            </form>
+                
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'mi_clase' %}" class="btn btn-secondary btn-icon-split btn-lg mr-2">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                        <span class="text">Cancelar</span>
+                    </a>
 
+                    <button type="submit" class="btn btn-primary btn-icon-split btn-lg">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <span class="text">Ejecutar Asignación</span>
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    // 1. Escuchar cuando el profesor cambie el libro
     document.getElementById('selectLibro').addEventListener('change', function() {
-        
-        // 2. Obtener la opción seleccionada
         var opcionSeleccionada = this.options[this.selectedIndex];
-        
-        // 3. Leer el atributo 'data-grado' (el ID del grado sugerido)
         var idGradoSugerido = opcionSeleccionada.getAttribute('data-grado');
-        
-        // 4. Cambiar el valor del select de Grado automáticamente
         var selectGrado = document.getElementById('selectGrado');
         
         if (idGradoSugerido) {
             selectGrado.value = idGradoSugerido;
             
-            // Efecto visual: Resaltar en verde para confirmar
-            selectGrado.style.backgroundColor = "#e8f5e9"; // Verde claro
+            // Efecto visual
+            selectGrado.style.backgroundColor = "#e8f5e9"; 
             document.getElementById('iconoCheck').style.display = 'flex';
             
-            // Volver al color normal después de 1 segundo
             setTimeout(function() {
                 selectGrado.style.backgroundColor = "";
             }, 1000);

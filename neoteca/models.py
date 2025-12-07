@@ -109,11 +109,12 @@ class Libro(models.Model):
     # categoria = models.CharField(...) <--- ESTO SE VA O SE IGNORA
     
     # --- NUEVA RELACIÓN ---
-    materia = models.ForeignKey(Materia, on_delete=models.SET_NULL, null=True, blank=True, db_column='id_materia')
-    
+    materia = models.ForeignKey(Materia, on_delete=models.SET_NULL, null=True, blank=True, db_column='id_materia')    
+    portada = models.ImageField(upload_to='libros/portadas/', null=True, blank=True, verbose_name="Portada del Libro")
     fecha_publicacion = models.DateField(null=True, blank=True)
     archivo_pdf = models.FileField(upload_to='libros/archivos/', help_text='Sube el archivo PDF.')
     
+
     grado = models.ForeignKey(Grado, on_delete=models.SET_NULL, null=True, blank=True, db_column='id_grado')
     tiempo_estimado = models.IntegerField(default=0)
     

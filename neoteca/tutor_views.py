@@ -77,6 +77,7 @@ def panel_tutor(request):
         return redirect('logout')
 
     contexto = {
+        'tutor': tutor_actual,
         'pupilos': resumen_progreso
     }
     return render(request, 'panel_tutor.html', contexto)
