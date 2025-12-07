@@ -1,60 +1,47 @@
-# /home/rubi/neoteca_sistema/neoteca/forms_book.py
-
 from django import forms
-from .models import Asignacion, Usuario, Libro, Grado, Materia 
-from django.db.models import Q 
+from .models import Libro, Asignacion, Grado, Materia
 
-# 1. Formulario para Subir Libros
+# --- FORMULARIO PARA SUBIR/EDITAR LIBROS ---
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ['titulo', 'autor', 'categoria', 'grado', 'tiempo_estimado', 'descripcion', 'archivo_pdf']
+        # CORRECCIÓN: Quitamos 'categoria' y ponemos 'materia'
+        fields = ['titulo', 'autor', 'materia', 'grado', 'tiempo_estimado', 'archivo_pdf', 'descripcion']
         
         widgets = {
-            'descripcion': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
-            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
-            'autor': forms.TextInput(attrs={'class': 'form-control'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título del libro'}),
+            'autor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del Autor'}),
+            'materia': forms.Select(attrs={'class': 'form-control'}), # Ahora es un Dropdown de Materias
             'grado': forms.Select(attrs={'class': 'form-control'}),
-            'tiempo_estimado': forms.NumberInput(attrs={
-                'class': 'form-control',  # <--- ESTO ES IMPORTANTE PARA QUE SE VEA BIEN
-                'placeholder': 'Ej: 60'
-            }),
+            'tiempo_estimado': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minutos estimados (Ej: 30)'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'archivo_pdf': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+        }
+        labels = {
+            'materia': 'Asignatura / Materia',
+            'tiempo_estimado': 'Tiempo de Lectura (Minutos)'
         }
 
-# 2. Formulario para Registrar Tiempo (Estudiante)
-class TiempoLecturaForm(forms.Form):
-    tiempo_minutos = forms.IntegerField(
-        label='Tiempo de Lectura (minutos)',
-        min_value=1,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'})
-    )
-
-# 3. Formulario para Asignar Tarea (Profesor) - ¡ESTE FALTABA!
+# --- FORMULARIO PARA ASIGNAR TAREAS ---
 class AsignacionForm(forms.ModelForm):
-    # Campo extra para filtrar visualmente
+    # Campo extra que NO se guarda en la tabla Asignacion, solo sirve para filtrar en el HTML
     grado_filtro = forms.ModelChoiceField(
         queryset=Grado.objects.all(),
         required=False,
-        label="Filtrar por Grado (Visual)",
-        widget=forms.Select(attrs={'class': 'form-control'})
+        label="Filtrar Grado (Visual)",
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'id_grado_filtro'})
     )
 
     class Meta:
         model = Asignacion
-        fields = ['materia', 'libro', 'estudiante'] # Incluye MATERIA
+        fields = ['estudiante', 'libro', 'materia'] # Agregamos materia
+        widgets = {
+            'estudiante': forms.Select(attrs={'class': 'form-control'}),
+            'libro': forms.Select(attrs={'class': 'form-control'}),
+            'materia': forms.Select(attrs={'class': 'form-control'}),
+        }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-        # ESTILOS BOOTSTRAP
-        self.fields['libro'].widget.attrs.update({'class': 'form-control'})
-        self.fields['estudiante'].widget.attrs.update({'class': 'form-control'})
-        self.fields['materia'].widget.attrs.update({'class': 'form-control'})
-        
-        # --- FILTRO IMPORTANTE ---
-        # Solo mostrar Usuarios con rol ESTUDIANTE en el select
-        self.fields['estudiante'].queryset = Usuario.objects.filter(rol='ESTUDIANTE').order_by('apellidos')
-        
-        # Etiquetas
-        self.fields['materia'].label = "Materia / Asignatura"
-        self.fields['estudiante'].label = "Estudiante"
+# --- FORMULARIO PARA REGISTRAR TIEMPO (AJAX) ---
+class TiempoLecturaForm(forms.Form):
+    libro_id = forms.IntegerField(widget=forms.HiddenInput())
+    segundos = forms.IntegerField(widget=forms.HiddenInput())

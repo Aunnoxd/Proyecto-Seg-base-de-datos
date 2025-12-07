@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from django.contrib import messages
 from .forms_registry import RegistroTutorForm, RegistroEstudianteForm
-from .models import Tutor, Estudiante, Usuario, Grado
+# IMPORTANTE: Importamos generar_codigo_tutor para usarlo manualmente
+from .models import Tutor, Estudiante, Usuario, Grado, generar_codigo_tutor
 
 # --- 1. REGISTRO PÚBLICO DE TUTOR ---
 def registro_tutor(request):
@@ -12,10 +13,8 @@ def registro_tutor(request):
         form = RegistroTutorForm(request.POST)
         if form.is_valid():
             try:
-                # Usamos el SP de Oracle para crear el Usuario Base + Tutor
-                # Respetando la seguridad del informe
+                # 1. Usamos el SP de Oracle para crear el Usuario Base
                 with connection.cursor() as cursor:
-                    # Parámetros: email, pass, nombres, apellidos, rol, carnet
                     cursor.callproc('crear_usuario_seguro', [
                         form.cleaned_data['email'],
                         form.cleaned_data['password'],
@@ -25,21 +24,27 @@ def registro_tutor(request):
                         form.cleaned_data['carnet']
                     ])
                 
-                # OJO: El SP crea el usuario y la fila en TUTOR.
-                # Si tu SP solo crea USUARIO, tendríamos que insertar en TUTOR manual aquí.
-                # Asumiremos que el SP hace el trabajo completo o insertamos los extras:
-                
-                # Actualizar datos extra del tutor (telefono, dirección) usando Django
-                # (Ya que el usuario ya existe gracias al SP)
+                # 2. Recuperamos el usuario recién creado
                 usuario_nuevo = Usuario.objects.get(email=form.cleaned_data['email'])
+                
+                # 3. Actualizamos datos extra en Django (Teléfono, Dirección)
                 usuario_nuevo.telefono = form.cleaned_data['telefono']
                 usuario_nuevo.direccion = form.cleaned_data['direccion']
                 usuario_nuevo.save()
                 
-                # Crear la instancia en tabla hija si el SP no lo hizo
-                Tutor.objects.get_or_create(id_usuario=usuario_nuevo)
+                # 4. CREACIÓN / ACTUALIZACIÓN DEL PERFIL TUTOR (Con Código Mágico)
+                # get_or_create verifica si el SP ya creó la fila en la tabla TUTOR.
+                tutor_obj, created = Tutor.objects.get_or_create(id_usuario=usuario_nuevo)
 
-                messages.success(request, "¡Cuenta creada! Inicie sesión.")
+                # --- AQUÍ ESTÁ LA SOLUCIÓN ---
+                # Si el tutor no tiene código (porque el SP lo creó vacío), se lo generamos ahora.
+                if not tutor_obj.codigo_vinculacion:
+                    tutor_obj.codigo_vinculacion = generar_codigo_tutor()
+                    tutor_obj.save()
+
+                # 5. Mensaje de éxito CON EL CÓDIGO VISIBLE
+                codigo = tutor_obj.codigo_vinculacion
+                messages.success(request, f"¡Cuenta creada! Su CÓDIGO DE VINCULACIÓN es: {codigo}. Guárdelo para inscribir a sus hijos.")
                 return redirect('login')
 
             except Exception as e:
@@ -60,6 +65,7 @@ def registrar_estudiante_por_tutor(request):
         if form.is_valid():
             try:
                 tutor_id = request.session.get('usuario_id')
+                # Generamos email ficticio si no tiene
                 email_est = form.cleaned_data['email'] or f"est_{tutor_id}_{form.cleaned_data['nombres']}@neoteca.com"
                 
                 # 1. Llamar al SP para crear el Usuario Estudiante
@@ -73,12 +79,10 @@ def registrar_estudiante_por_tutor(request):
                         form.cleaned_data['carnet']
                     ])
 
-                # 2. Vincularlo con el Tutor y Grado (Tabla Hija)
-                # Recuperamos el usuario recién creado por el SP
+                # 2. Vincularlo con el Tutor y Grado
                 nuevo_usuario = Usuario.objects.get(email=email_est)
                 tutor_obj = Tutor.objects.get(id_usuario=tutor_id)
                 
-                # Crear o actualizar registro en tabla ESTUDIANTE
                 Estudiante.objects.update_or_create(
                     id_usuario=nuevo_usuario,
                     defaults={

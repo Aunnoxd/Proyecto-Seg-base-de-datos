@@ -1,12 +1,12 @@
 # neoteca/admin.py
 
 from django.contrib import admin
-from django.db import connection, DatabaseError
+from django.db import connection
 from django.contrib import messages
 from .models import (
     Grado, Materia, Usuario, Libro, Asignacion, Lee, 
     Profesor, Estudiante, Tutor, 
-    RankingLectores, ReporteProfesores, ReporteSeguridad, 
+    RankingLectores, ReporteProfesores, ReporteSeguridad,
     ReporteTareasPendientes, VistaUsuariosSegura
 )
 
@@ -22,7 +22,7 @@ def promover_estudiantes(modeladmin, request, queryset):
                 # Llamada al SP
                 cursor.callproc('promover_estudiante', [usuario.id_usuario])
                 exitos += 1
-            except Exception as e: # Capturamos cualquier error para no romper el admin
+            except Exception as e: 
                 error_msg = str(e)
                 if 'ORA-20016' in error_msg:
                     errores.append(f"{usuario.nombres}: Ya está en el último grado.")
@@ -66,9 +66,8 @@ class UsuarioAdmin(admin.ModelAdmin):
     search_fields = ('nombres', 'apellidos', 'email', 'carnet_identidad')
     ordering = ('apellidos',)
     inlines = [ProfesorInline, EstudianteInline, TutorInline]
-    actions = [promover_estudiantes] # Aquí registramos la acción
-    class Media:
-        js = ('js/admin_roles.js',) # Carga nuestro script mágico
+    actions = [promover_estudiantes] 
+    
 # 2. GRADO
 @admin.register(Grado)
 class GradoAdmin(admin.ModelAdmin):
@@ -76,30 +75,30 @@ class GradoAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
     ordering = ('nivel_jerarquico',)
 
-# 3. MATERIA
+# 3. MATERIA (NUEVO)
 @admin.register(Materia)
 class MateriaAdmin(admin.ModelAdmin):
     list_display = ('id_materia', 'nombre')
     search_fields = ('nombre',)
 
-# 4. LIBRO
+# 4. LIBRO (CORREGIDO)
 @admin.register(Libro)
 class LibroAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'autor', 'categoria', 'grado', 'ver_tiempo')
-    list_filter = ('categoria', 'grado')
+    # CORRECCIÓN: Cambiamos 'categoria' por 'materia'
+    list_display = ('titulo', 'autor', 'materia', 'grado', 'ver_tiempo')
+    list_filter = ('materia', 'grado') # Filtramos por materia ahora
     search_fields = ('titulo', 'autor')
 
     def ver_tiempo(self, obj):
-        # Llamamos a la propiedad que creamos en models.py
         return obj.tiempo_formateado
     
-    # Esto pone el título bonito a la columna
     ver_tiempo.short_description = 'Tiempo Estimado '
     ver_tiempo.admin_order_field = 'tiempo_estimado'
 
 # 5. ASIGNACION
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
+    # Agregamos materia también aquí para verla
     list_display = ('libro', 'estudiante', 'profesor', 'materia', 'estado', 'created_at')
     list_filter = ('estado', 'materia', 'created_at')
     search_fields = ('estudiante__nombres', 'libro__titulo')
@@ -137,16 +136,15 @@ class ReporteSeguridadAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None): return False
     def has_change_permission(self, request, obj=None): return False
 
+# Reportes Nuevos (Vistas SQL)
 @admin.register(ReporteTareasPendientes)
 class ReporteTareasAdmin(admin.ModelAdmin):
-    # Usamos 'fecha_asignacion' porque así le pusimos en el modelo
     list_display = ('tutor', 'estudiante', 'libro_pendiente', 'fecha_asignacion')
     list_filter = ('tutor', 'fecha_asignacion')
-    
     def has_add_permission(self, request): return False
     def has_delete_permission(self, request, obj=None): return False
     def has_change_permission(self, request, obj=None): return False
-    
+
 @admin.register(VistaUsuariosSegura)
 class VistaSeguraAdmin(admin.ModelAdmin):
     list_display = ('id_usuario', 'nombres', 'rol', 'email_anonimizado', 'carnet_oculto')

@@ -1,3 +1,5 @@
+<!--profesor_asignar_masivo-->
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -24,8 +26,8 @@
                         <select name="libro" id="selectLibro" class="form-control" required>
                             <option value="" selected disabled>-- Elige un libro --</option>
                             {% for l in libros %}
-                                <option value="{{ l.id_libro }}" data-grado="{{ l.id_grado.id_grado }}">
-                                    {{ l.titulo }} (Sugerido: {{ l.id_grado.nombre }})
+                                <option value="{{ l.id_libro }}" data-grado="{{ l.grado.id_grado }}">
+                                    {{ l.titulo }} (Sugerido: {{ l.grado.nombre }})
                                 </option>
                             {% endfor %}
                         </select>

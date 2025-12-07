@@ -80,7 +80,7 @@ def login_view(request):
                 # 2. Buscar al Estudiante vinculado a ese tutor
                 # Buscamos que el nombre coincida (case insensitive) y la contraseña sea correcta
                 estudiante = Estudiante.objects.select_related('id_usuario').filter(
-                    id_tutor=tutor_padre,
+                    tutor=tutor_padre,
                     id_usuario__nombres__icontains=nombre_estudiante, 
                     id_usuario__password=password_est 
                 ).first()

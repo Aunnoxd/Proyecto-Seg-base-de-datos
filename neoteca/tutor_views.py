@@ -16,6 +16,7 @@ def panel_tutor(request):
         # 2. Obtener el Tutor
         tutor_actual = Tutor.objects.get(id_usuario=usuario_id)
         
+        
         # 3. Buscar Estudiantes (Pupilos)
         pupilos = Estudiante.objects.filter(tutor=tutor_actual).select_related('id_usuario', 'grado')
         
