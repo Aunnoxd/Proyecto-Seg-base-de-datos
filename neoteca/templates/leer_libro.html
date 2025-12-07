@@ -9,6 +9,7 @@
         <small class="text-muted">{{ libro.autor }}</small>
     </div>
     
+    {% if rol_actual == 'ESTUDIANTE' %}
     <div class="d-flex">
         <div class="card border-left-success shadow-sm py-2 px-3 mr-3">
             <div class="row no-gutters align-items-center">
@@ -32,6 +33,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <div class="ml-3 text-right">
         {% if libro.archivo_pdf %}
@@ -39,7 +41,7 @@
                 <i class="fas fa-check-circle"></i> Terminar y Descargar
             </a>
         {% endif %}
-        <a href="{% url 'lista_libros' %}" class="btn btn-secondary btn-sm shadow-sm d-block mt-1">Volver</a>
+        <a href="{% url 'lista_libros' %}" class="btn btn-secondary btn-sm shadow-sm d-block mt-1">Volver al Catálogo</a>
     </div>
 </div>
 
@@ -48,40 +50,49 @@
         {% if libro.archivo_pdf %}
             <iframe src="{{ libro.archivo_pdf.url }}#toolbar=0" width="100%" height="100%" style="border:none;"></iframe>
         {% else %}
-            <div class="text-center text-white mt-5">No hay PDF disponible.</div>
+            <div class="d-flex flex-column align-items-center justify-content-center h-100 text-white">
+                <i class="fas fa-exclamation-triangle fa-3x mb-3 text-warning"></i>
+                <h4>No hay archivo PDF cargado para este libro.</h4>
+            </div>
         {% endif %}
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+{% if rol_actual == 'ESTUDIANTE' %}
 <script>
-    // Variables
-    let tiempoSesion = 0;    // Para mostrar en pantalla
-    let tiempoPendiente = 0; // Para enviar al servidor
+    // Variables Globales
+    let tiempoSesion = 0;    // Segundos visuales
+    let tiempoPendiente = 0; // Segundos acumulados para enviar a Oracle
     const libroId = Number("{{ libro.id_libro|default:'0' }}");
     const csrfToken = "{{ csrf_token }}";
+    // Usamos la URL generada por Django
     const urlAjax = "{% url 'registrar_tiempo_ajax' %}";
 
-    // 1. Reloj Visual (Cada segundo)
+    // 1. RELOJ VISUAL (Se mueve cada segundo)
     setInterval(() => {
         tiempoSesion++;
         tiempoPendiente++;
         
-        // Formato MM:SS
+        // Formato visual 00:00
         const min = Math.floor(tiempoSesion / 60);
         const sec = tiempoSesion % 60;
         document.getElementById('cronometro').innerText = 
             `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     }, 1000);
 
-    // 2. Función de Guardado (Núcleo)
+    // 2. FUNCIÓN DE GUARDADO (AJAX)
     function guardarProgreso(esCompletado = false, accionDespues = null) {
-        // Validamos: Si no hay tiempo nuevo y no es completar, no hacemos nada
-        if (tiempoPendiente <= 0 && !esCompletado) return;
+        // Optimización: No enviar si no hay tiempo nuevo y no es una finalización
+        if (tiempoPendiente <= 0 && !esCompletado) {
+            if (accionDespues) accionDespues(); // Ejecutar callback aunque no guarde
+            return;
+        }
 
-        const segundosAEnviar = tiempoPendiente;
+        const segundosAEnviar = tiempoPendiente; // Copia local
         
-        console.log(` Enviando: ${segundosAEnviar}s | Completado: ${esCompletado}`);
-
         fetch(urlAjax, {
             method: "POST",
             headers: { 
@@ -96,53 +107,55 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Respuesta Servidor:", data);
-            
             if (data.status === 'ok') {
-                // Reiniciamos el contador pendiente porque ya se guardó
-                tiempoPendiente = 0; 
+                // Restar lo que ya enviamos (evita perder segundos si el fetch tarda)
+                tiempoPendiente -= segundosAEnviar; 
                 
-                // Actualizamos el total histórico visualmente
+                // Actualizar total histórico visual
                 const totalMin = Math.round(data.nuevo_total / 60);
-                document.getElementById('total-bd').innerText = totalMin;
+                const elTotal = document.getElementById('total-bd');
+                if(elTotal) elTotal.innerText = totalMin;
 
-                // Si había una acción pendiente (ej: descargar), la ejecutamos
+                // Ejecutar acción posterior (ej: descargar)
                 if (accionDespues) accionDespues();
             }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => console.error("Error AJAX:", error));
     }
 
-    // 3. Guardado Automático (Cada 15 segundos)
-    setInterval(() => guardarProgreso(false), 15000);
+    // 3. GUARDADO AUTOMÁTICO (Cada 10 segundos)
+    setInterval(() => guardarProgreso(false), 10000);
 
-    // 4. Guardado al Salir de la página
+    // 4. GUARDADO AL CERRAR PESTAÑA (Best Effort)
     window.addEventListener('beforeunload', () => guardarProgreso(false));
 
-    // 5. BOTÓN DESCARGAR (Lógica arreglada)
-    const btn = document.getElementById('btn-descargar-final');
-    if (btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault(); // 1. DETENER la descarga inmediata
+    // 5. BOTÓN TERMINAR Y DESCARGAR
+    const btnDescarga = document.getElementById('btn-descargar-final');
+    if (btnDescarga) {
+        btnDescarga.addEventListener('click', function(e) {
+            e.preventDefault(); // Detenemos el link
             
-            // Cambiar texto para feedback visual
-            const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-            btn.classList.add('disabled');
+            // Feedback visual
+            const textoOriginal = btnDescarga.innerHTML;
+            btnDescarga.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            btnDescarga.classList.add('disabled');
 
-            // 2. Guardar con flag completado=true
+            // Guardamos forzando completado=true
             guardarProgreso(true, function() {
-                // 3. Cuando el servidor responda OK, iniciamos la descarga
-                const urlPDF = btn.getAttribute('data-url');
-                window.location.href = urlPDF; // Esto inicia la descarga real
+                // Cuando el servidor confirma guardado, iniciamos la descarga real
+                const urlPDF = btnDescarga.getAttribute('data-url');
                 
-                btn.innerHTML = '<i class="fas fa-check"></i> ¡Listo!';
+                // Abrir PDF en nueva pestaña para descargar
+                window.open(urlPDF, '_blank');
+                
+                btnDescarga.innerHTML = '<i class="fas fa-check"></i> ¡Listo!';
+                // Redirigir al catálogo después de un momento
                 setTimeout(() => {
-                    alert("¡Tarea marcada como completada! Descargando archivo...");
-                }, 500);
+                    window.location.href = "{% url 'lista_libros' %}";
+                }, 1000);
             });
         });
     }
 </script>
-
+{% endif %}
 {% endblock %}

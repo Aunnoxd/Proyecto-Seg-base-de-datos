@@ -71,6 +71,8 @@
         // 1. Estudiante -> Grado
         const selEst = document.getElementById('selectEstudiante');
         const selGrado = document.querySelector('#contenedorGrado select');
+        
+        // Aseguramos que el select de grado tenga la clase correcta
         if(selGrado) selGrado.classList.add('form-control');
 
         selEst.addEventListener('change', function() {
@@ -81,17 +83,21 @@
             }
         });
 
-        // 2. Libro -> Materia (AHORA ES EXACTO POR ID)
+        // 2. Libro -> Materia (LA PARTE QUE FALLABA)
         const selLibro = document.getElementById('selectLibro');
         const selMateria = document.getElementById('selectMateria');
 
         selLibro.addEventListener('change', function() {
-            // Obtenemos el ID de la materia directamente
+            // Buscamos el ID de la materia en el atributo data
             const materiaId = this.options[this.selectedIndex].getAttribute('data-materia-id');
             
+            // Si el libro tiene materia, la seleccionamos
             if (materiaId) {
-                selMateria.value = materiaId; // Asignación directa
+                selMateria.value = materiaId;
                 flash(selMateria, "#d4edda"); // Flash Verde
+            } else {
+                // Si no tiene materia, reseteamos o no hacemos nada
+                selMateria.value = "";
             }
         });
 

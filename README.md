@@ -1,4 +1,3 @@
-```markdown
 # 📚 NEOTECA - Sistema de Biblioteca Escolar Segura
 
 **Neoteca** es una plataforma integral para la gestión de bibliotecas escolares, diseñada bajo una **Arquitectura Híbrida** que combina la flexibilidad del desarrollo web moderno con la robustez de una base de datos empresarial.
@@ -54,31 +53,41 @@ neoteca_sistema/
 │   └── urls.py             # Rutas web
 ├── static/                 # CSS, JS, Imágenes del sistema
 ├── media/                  # Portadas y PDFs subidos
+├── neoteca_full.dmp        # RESPALDO COMPLETO DE ORACLE (Importar)
 ├── requirements.txt        # Dependencias del proyecto
 ├── manage.py               # Ejecutor de Django
-└── .env                    # Variables de entorno (Se debe crear)
-````
+└── .env                    # Variables de entorno
 
------
+🔧 Guía de Instalación y Despliegue
+1. Despliegue de Base de Datos (Docker)
 
-## 🔧 Guía de Instalación
+Este paso es crucial para levantar Oracle 21c XE.
+Bash
 
-Sigue estos pasos para desplegar el proyecto en local.
-
-### 1\. Configuración de Base de Datos
-
-Asegúrate de tener Docker instalado y ejecuta el contenedor de Oracle:
-
-```bash
+# 1. Iniciar el contenedor
 docker run -d --name oracle-db \
   -p 1521:1521 \
   -e ORACLE_PWD=biblioteca_123 \
   gvenzl/oracle-xe
-```
 
-### 2\. Configuración del Entorno Python
+2. Restauración de Datos y Lógica (IMPORTANTE)
 
-```bash
+El sistema utiliza Procedimientos Almacenados y Triggers que deben importarse.
+Bash
+
+# 1. Copiar el archivo de respaldo al contenedor
+docker cp neoteca_full.dmp oracle-db:/opt/oracle/admin/XE/dpdump/
+
+# 2. Dar permisos de lectura al archivo (Fix de permisos)
+docker exec -u 0 oracle-db chmod 777 /opt/oracle/admin/XE/dpdump/neoteca_full.dmp
+
+# 3. Ejecutar la importación (Data Pump)
+docker exec oracle-db impdp system/biblioteca_123 directory=DATA_PUMP_DIR dumpfile=neoteca_full.dmp table_exists_action=REPLACE
+
+Si la importación es exitosa, verá mensajes como "Processing object type SCHEMA_EXPORT/PROCEDURE".
+3. Configuración del Entorno Python
+Bash
+
 # Crear entorno virtual
 python -m venv venv
 
@@ -89,49 +98,24 @@ source venv/bin/activate
 
 # Instalar dependencias
 pip install -r requirements.txt
-```
 
-### 3\. Variables de Entorno
+4. Variables de Entorno
 
-Crea un archivo llamado `.env` en la raíz del proyecto y agrega lo siguiente:
+Crea un archivo llamado .env en la raíz del proyecto y agrega lo siguiente:
+Ini, TOML
 
-```ini
 DEBUG=True
-SECRET_KEY=tu_clave_secreta_segura
+SECRET_KEY=tu_clave_secreta_neoteca_2025
 DB_USER=system
 DB_PASSWORD=biblioteca_123
 DB_HOST=localhost
 DB_PORT=1521
 DB_SERVICE=XE
-```
 
-### 4\. Ejecución
+5. Ejecución del Servidor
+Bash
 
-```bash
-# Aplicar migraciones (Crear estructura en Oracle)
-python manage.py migrate
-
-# Iniciar el servidor
+# Iniciar el servidor web
 python manage.py runserver
-```
 
-Accede al sistema en: `http://127.0.0.1:8000`
-
------
-
-## 👤 Credenciales de Acceso (Demo)
-
-| Rol | Usuario / Email | Contraseña | Funcionalidad |
-| :--- | :--- | :--- | :--- |
-| **Administrador** | `admin@neoteca.com` | `admin123` | Gestión total + Auditoría |
-| **Profesor** | `profe@neoteca.com` | `profe123` | Gestión de clases y libros |
-| **Tutor** | `tutor@neoteca.com` | `tutor123` | Código vinculación: `TUT-DEMO` |
-| **Estudiante** | *Nombre: Juan* | `juan123` | Requiere Código de Tutor |
-
------
-
-**Estado del Proyecto:** Finalizado (Defensa)  
-**Desarrollado por:** [TUX]  
-**Materia:** [Seguridad de Base de datos] - 2025
-
-```
+Accede al sistema en: http://127.0.0.1:8000

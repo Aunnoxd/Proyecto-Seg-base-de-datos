@@ -1,0 +1,1197 @@
+[
+{
+    "model": "neoteca.grado",
+    "pk": 1,
+    "fields": {
+        "nombre": "1ro Primaria",
+        "nivel_jerarquico": 1
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 2,
+    "fields": {
+        "nombre": "2do de Primaria",
+        "nivel_jerarquico": 2
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 3,
+    "fields": {
+        "nombre": "3ro de Primaria",
+        "nivel_jerarquico": 3
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 4,
+    "fields": {
+        "nombre": "4to de Primaria",
+        "nivel_jerarquico": 4
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 5,
+    "fields": {
+        "nombre": "5to de Primaria",
+        "nivel_jerarquico": 5
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 6,
+    "fields": {
+        "nombre": "6to de Primaria",
+        "nivel_jerarquico": 6
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 7,
+    "fields": {
+        "nombre": "1ro de Secundaria",
+        "nivel_jerarquico": 7
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 8,
+    "fields": {
+        "nombre": "2do de Secundaria",
+        "nivel_jerarquico": 8
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 9,
+    "fields": {
+        "nombre": "3ro de Secundaria",
+        "nivel_jerarquico": 9
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 10,
+    "fields": {
+        "nombre": "4to de Secundaria",
+        "nivel_jerarquico": 10
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 11,
+    "fields": {
+        "nombre": "5to de Secundaria",
+        "nivel_jerarquico": 11
+    }
+},
+{
+    "model": "neoteca.grado",
+    "pk": 12,
+    "fields": {
+        "nombre": "Promo (6to Sec)",
+        "nivel_jerarquico": 12
+    }
+},
+{
+    "model": "neoteca.materia",
+    "pk": 1,
+    "fields": {
+        "nombre": "Lenguaje"
+    }
+},
+{
+    "model": "neoteca.materia",
+    "pk": 2,
+    "fields": {
+        "nombre": "Historia"
+    }
+},
+{
+    "model": "neoteca.materia",
+    "pk": 3,
+    "fields": {
+        "nombre": "Ciencias"
+    }
+},
+{
+    "model": "neoteca.materia",
+    "pk": 5,
+    "fields": {
+        "nombre": "Civica"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 1,
+    "fields": {
+        "email": "admin@neoteca.com",
+        "password": "58B5444CF1B6253A4317FE12DAFF411A78BDA0A95279B1D5768EBF5CA60829E78DA944E8A9160A0B6D428CB213E813525A72650DAC67B88879394FF624DA482F",
+        "carnet_identidad": "6464645",
+        "nombres": "Jimmy",
+        "apellidos": "Urinated",
+        "rol": "ADMIN",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": "2003-11-22",
+        "direccion": "MI Casa",
+        "telefono": "5456456"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 2,
+    "fields": {
+        "email": "tutor2@neoteca.com",
+        "password": "94A2F351E6415A05CB07631EAA063EE6BAD57C643E715142A0140ED0FE421D28EA8A64581B05FC7C872C6041CECE576BC4AA01B60EA46DAD368D92239C4C95A5",
+        "carnet_identidad": "78452358745",
+        "nombres": "Cross",
+        "apellidos": "Neo",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": "1999-02-15",
+        "direccion": "Casa Aesthetic",
+        "telefono": "78451254687"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 3,
+    "fields": {
+        "email": "ana@neoteca.com",
+        "password": "C710358C4194EBF43C09B03DE4576162A045B6A7E8D76C93B6F431B25FBB6037D8CDAC666B24F4D610865764526D4BE3F6CFA90F635BAE95C417DE3F87BB0656",
+        "carnet_identidad": "56486543",
+        "nombres": "Ana",
+        "apellidos": "Neo",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": "2018-03-14",
+        "direccion": "Casa Astehetic",
+        "telefono": "56456465"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 4,
+    "fields": {
+        "email": "profe@neoteca.com",
+        "password": "FEA631FBABDEABC86354BB3BE07BF508E0269492CAC38ED07CB9395DF4910BCBA82A909ABD93C4CA2C44472EF7B669BAD8B6B8765148A6733AAAAF958F6E6FDC",
+        "carnet_identidad": "56465456",
+        "nombres": "DReam",
+        "apellidos": "Gomez",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": "1998-06-02",
+        "direccion": "Casa backroom",
+        "telefono": "7897465"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 10,
+    "fields": {
+        "email": "tutor1@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "1001",
+        "nombres": "Carlos",
+        "apellidos": "Mamani",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 11,
+    "fields": {
+        "email": "tutor2@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "1002",
+        "nombres": "Maria",
+        "apellidos": "Flores",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 12,
+    "fields": {
+        "email": "tutor3@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "1003",
+        "nombres": "Pedro",
+        "apellidos": "Quispe",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 13,
+    "fields": {
+        "email": "tutor4@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "1004",
+        "nombres": "Ana",
+        "apellidos": "Vargas",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 14,
+    "fields": {
+        "email": "tutor5@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "1005",
+        "nombres": "Luis",
+        "apellidos": "Choque",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 20,
+    "fields": {
+        "email": "profe1@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "2001",
+        "nombres": "Roberto",
+        "apellidos": "Gomez",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 21,
+    "fields": {
+        "email": "mariatutor@neoteca.com",
+        "password": "8D99FB95A2AEE7491D988F6279C878F8BCC7130102B1CB8D27430A673546786E8D0BDB22D6E609B679C26D9521BE886377F2DA038827329126F54E48A3AAB11B",
+        "carnet_identidad": "46548456",
+        "nombres": "Maria",
+        "apellidos": "Cocche",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "Maria Casa",
+        "telefono": "456465"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 22,
+    "fields": {
+        "email": "profe3@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "2003",
+        "nombres": "Javier",
+        "apellidos": "Soto",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 23,
+    "fields": {
+        "email": "profe4@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "2004",
+        "nombres": "Elena",
+        "apellidos": "Rojas",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 24,
+    "fields": {
+        "email": "profe5@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "2005",
+        "nombres": "Marco",
+        "apellidos": "Paz",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 30,
+    "fields": {
+        "email": "est1@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "3001",
+        "nombres": "Pepito",
+        "apellidos": "Mamani",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 31,
+    "fields": {
+        "email": "est2@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "3002",
+        "nombres": "Juanito",
+        "apellidos": "Mamani",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 32,
+    "fields": {
+        "email": "est3@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "3003",
+        "nombres": "Lucia",
+        "apellidos": "Flores",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 33,
+    "fields": {
+        "email": "est4@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "3004",
+        "nombres": "Mateo",
+        "apellidos": "Quispe",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 34,
+    "fields": {
+        "email": "est5@test.com",
+        "password": "3C9909AFEC25354D551DAE21590BB26E38D53F2173B8D3DC3EEE4C047E7AB1C1EB8B85103E3BE7BA613B31BB5C9C36214DC9F14A42FD7A2FDB84856BCA5C44C2",
+        "carnet_identidad": "3005",
+        "nombres": "Carla",
+        "apellidos": "Vargas",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-03",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 120,
+    "fields": {
+        "email": "felipetutor@neoteca.com",
+        "password": "F4815935C2E0BEE8D581E59CDD8926E926E726EF5EE8E7C8BADC47B39988E3A50CFC5CA36A2E80AE2836D1C8B91184460CA281114E097C8DF793D8436F72C1F3",
+        "carnet_identidad": "232131231",
+        "nombres": "Felipe",
+        "apellidos": "Quispe",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-07",
+        "fecha_nacimiento": null,
+        "direccion": "Zona Tejar",
+        "telefono": "4564564"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 121,
+    "fields": {
+        "email": "leotutor@neoteca.com",
+        "password": "AA1327D93C6C26DC03C3E6FF680BD1A55AF1D2F300E29963BE175303229BE50E75ABEB629348D39ED996826C0D942A3D23800CDB3B1CBAEF6C3F324C540F5F81",
+        "carnet_identidad": "289137891",
+        "nombres": "Leonardo",
+        "apellidos": "Mamani",
+        "rol": "TUTOR",
+        "fecha_registro": "2025-12-07",
+        "fecha_nacimiento": null,
+        "direccion": "Miraflores",
+        "telefono": "1298198"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 122,
+    "fields": {
+        "email": "mafalda@neoteca.com",
+        "password": "7B18F4C3F33A99120B41633332B6D392C4551FA237CB5252789C0EFA04C1A8DBF43CEA4C03555909E9A1F011325BAA5900E71B786578F88D7297EAF604364E45",
+        "carnet_identidad": "13981903",
+        "nombres": "Mafalda",
+        "apellidos": "Ramirez",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-07",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 123,
+    "fields": {
+        "email": "lourdes@neoteca.com",
+        "password": "lourdes1",
+        "carnet_identidad": "2131298",
+        "nombres": "Lourdes",
+        "apellidos": "Chura",
+        "rol": "PROFESOR",
+        "fecha_registro": "2025-12-07",
+        "fecha_nacimiento": "2005-02-14",
+        "direccion": "Achocalla",
+        "telefono": "2310293"
+    }
+},
+{
+    "model": "neoteca.usuario",
+    "pk": 124,
+    "fields": {
+        "email": "manolito@neoteca.com",
+        "password": "47E96F4AFF3D68396FD57921B7FFAFDAEB994408D5A3F5DDAA3E9F99D775678E7F87A8915AEFFFA42CA74D0E247D2E6D4B5A3A903141107E959DB6FCEB40A36A",
+        "carnet_identidad": "121313124",
+        "nombres": "Manolito",
+        "apellidos": "Quispe",
+        "rol": "ESTUDIANTE",
+        "fecha_registro": "2025-12-07",
+        "fecha_nacimiento": null,
+        "direccion": "",
+        "telefono": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 4,
+    "fields": {
+        "especialidad": "Matematicas",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 20,
+    "fields": {
+        "especialidad": "Literatura",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 21,
+    "fields": {
+        "especialidad": "Historia",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 22,
+    "fields": {
+        "especialidad": "Ciencias",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 23,
+    "fields": {
+        "especialidad": "Lenguaje",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 24,
+    "fields": {
+        "especialidad": "C��vica",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 32,
+    "fields": {
+        "especialidad": "",
+        "grado_academico": "jhjk"
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 122,
+    "fields": {
+        "especialidad": "H",
+        "grado_academico": ""
+    }
+},
+{
+    "model": "neoteca.profesor",
+    "pk": 123,
+    "fields": {
+        "especialidad": "Matematicas",
+        "grado_academico": "Licenciatra"
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 2,
+    "fields": {
+        "codigo_vinculacion": "TUT-0001",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 10,
+    "fields": {
+        "codigo_vinculacion": "TUT-8909",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 11,
+    "fields": {
+        "codigo_vinculacion": "TUT-0909",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 12,
+    "fields": {
+        "codigo_vinculacion": "TUT-9990",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 13,
+    "fields": {
+        "codigo_vinculacion": "TUT-0005",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.tutor",
+    "pk": 121,
+    "fields": {
+        "codigo_vinculacion": "TUT-9091",
+        "direccion_domicilio": "",
+        "telefono_emergencia": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 3,
+    "fields": {
+        "grado": 1,
+        "tutor": 2,
+        "datos_medicos": "NInguno"
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 30,
+    "fields": {
+        "grado": 1,
+        "tutor": 10,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 31,
+    "fields": {
+        "grado": 5,
+        "tutor": 10,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 32,
+    "fields": {
+        "grado": 7,
+        "tutor": 11,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 33,
+    "fields": {
+        "grado": 12,
+        "tutor": 12,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 34,
+    "fields": {
+        "grado": 8,
+        "tutor": 13,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 122,
+    "fields": {
+        "grado": 8,
+        "tutor": 121,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 123,
+    "fields": {
+        "grado": null,
+        "tutor": null,
+        "datos_medicos": "lk"
+    }
+},
+{
+    "model": "neoteca.estudiante",
+    "pk": 124,
+    "fields": {
+        "grado": 3,
+        "tutor": 121,
+        "datos_medicos": ""
+    }
+},
+{
+    "model": "neoteca.libro",
+    "pk": 1,
+    "fields": {
+        "titulo": "blanca nieves y rosa roja",
+        "autor": "Hermanos Grimm",
+        "descripcion": "Una pobre mujer vivía en una cabaña en medio del campo; en un huerto\r\nsituado delante de la puerta, había dos rosales, uno de los cuales daba\r\nrosas blancas y el otro rosas encarnadas....",
+        "materia": null,
+        "portada": "libros/portadas/blancanieeveyrosaroja.jpeg",
+        "fecha_publicacion": "2025-12-03",
+        "archivo_pdf": "libros/archivos/Hermanos_Grimm_-_Blancanieve_y_Rojarosa.pdf",
+        "grado": 1,
+        "tiempo_estimado": 16,
+        "id_usuario_subio": null,
+        "created_at": "2025-12-03T00:46:40.835Z"
+    }
+},
+{
+    "model": "neoteca.lee",
+    "pk": 1,
+    "fields": {
+        "estudiante": 3,
+        "libro": 1,
+        "fecha_inicio": "2025-12-03T01:05:04.778Z",
+        "tiempo_leido_segundos": 358
+    }
+},
+{
+    "model": "neoteca.lee",
+    "pk": 2,
+    "fields": {
+        "estudiante": 1,
+        "libro": 1,
+        "fecha_inicio": "2025-12-03T01:06:21.101Z",
+        "tiempo_leido_segundos": 88
+    }
+},
+{
+    "model": "neoteca.lee",
+    "pk": 23,
+    "fields": {
+        "estudiante": 122,
+        "libro": 1,
+        "fecha_inicio": "2025-12-07T15:56:58.085Z",
+        "tiempo_leido_segundos": 39
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 1,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 3,
+        "libro": 1,
+        "materia": 1,
+        "estado": "COMPLETADO",
+        "created_at": "2025-12-03T01:04:31.045Z"
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 21,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 3,
+        "libro": 1,
+        "materia": null,
+        "estado": "PENDIENTE",
+        "created_at": "2025-12-06T23:08:38Z"
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 22,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 30,
+        "libro": 1,
+        "materia": null,
+        "estado": "PENDIENTE",
+        "created_at": "2025-12-06T23:08:38Z"
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 23,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 30,
+        "libro": 1,
+        "materia": 1,
+        "estado": "PENDIENTE",
+        "created_at": "2025-12-06T23:55:43.147Z"
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 41,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 33,
+        "libro": 1,
+        "materia": 1,
+        "estado": "PENDIENTE",
+        "created_at": "2025-12-07T02:05:13.608Z"
+    }
+},
+{
+    "model": "neoteca.asignacion",
+    "pk": 61,
+    "fields": {
+        "profesor": 4,
+        "estudiante": 122,
+        "libro": 1,
+        "materia": 1,
+        "estado": "PENDIENTE",
+        "created_at": "2025-12-07T15:49:07.800Z"
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Ana Neo",
+    "fields": {
+        "sesiones_iniciadas": 1,
+        "minutos_totales": "5.96666666666666666666666666666666666667"
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Carla Vargas",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Juanito Mamani",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Lucia Flores",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Mafalda Ramirez",
+    "fields": {
+        "sesiones_iniciadas": 1,
+        "minutos_totales": "0.65"
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Manolito Quispe",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Mateo Quispe",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.rankinglectores",
+    "pk": "Pepito Mamani",
+    "fields": {
+        "sesiones_iniciadas": 0,
+        "minutos_totales": 0
+    }
+},
+{
+    "model": "neoteca.reporteprofesores",
+    "pk": "DReam Gomez",
+    "fields": {
+        "tareas_asignadas": 6
+    }
+},
+{
+    "model": "neoteca.reportetareaspendientes",
+    "pk": 1,
+    "fields": {
+        "tutor": "Cross",
+        "estudiante": "Ana",
+        "libro_pendiente": "blanca nieves y rosa roja",
+        "fecha_asignacion": "2025-12-06T23:08:38Z"
+    }
+},
+{
+    "model": "neoteca.reportetareaspendientes",
+    "pk": 2,
+    "fields": {
+        "tutor": "Carlos",
+        "estudiante": "Pepito",
+        "libro_pendiente": "blanca nieves y rosa roja",
+        "fecha_asignacion": "2025-12-06T23:08:38Z"
+    }
+},
+{
+    "model": "neoteca.reportetareaspendientes",
+    "pk": 3,
+    "fields": {
+        "tutor": "Carlos",
+        "estudiante": "Pepito",
+        "libro_pendiente": "blanca nieves y rosa roja",
+        "fecha_asignacion": "2025-12-06T23:55:43.147Z"
+    }
+},
+{
+    "model": "neoteca.reportetareaspendientes",
+    "pk": 4,
+    "fields": {
+        "tutor": "Pedro",
+        "estudiante": "Mateo",
+        "libro_pendiente": "blanca nieves y rosa roja",
+        "fecha_asignacion": "2025-12-07T02:05:13.608Z"
+    }
+},
+{
+    "model": "neoteca.reportetareaspendientes",
+    "pk": 5,
+    "fields": {
+        "tutor": "Leonardo",
+        "estudiante": "Mafalda",
+        "libro_pendiente": "blanca nieves y rosa roja",
+        "fecha_asignacion": "2025-12-07T15:49:07.800Z"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 1,
+    "fields": {
+        "nombres": "Jimmy",
+        "rol": "ADMIN",
+        "email_anonimizado": "adm****@neoteca.com",
+        "carnet_oculto": "*****645"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 2,
+    "fields": {
+        "nombres": "Cross",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@neoteca.com",
+        "carnet_oculto": "*****745"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 3,
+    "fields": {
+        "nombres": "Ana",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "ana****@neoteca.com",
+        "carnet_oculto": "*****543"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 4,
+    "fields": {
+        "nombres": "DReam",
+        "rol": "PROFESOR",
+        "email_anonimizado": "pro****@neoteca.com",
+        "carnet_oculto": "*****456"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 10,
+    "fields": {
+        "nombres": "Carlos",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@test.com",
+        "carnet_oculto": "*****001"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 11,
+    "fields": {
+        "nombres": "Maria",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@test.com",
+        "carnet_oculto": "*****002"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 12,
+    "fields": {
+        "nombres": "Pedro",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@test.com",
+        "carnet_oculto": "*****003"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 13,
+    "fields": {
+        "nombres": "Ana",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@test.com",
+        "carnet_oculto": "*****004"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 14,
+    "fields": {
+        "nombres": "Luis",
+        "rol": "TUTOR",
+        "email_anonimizado": "tut****@test.com",
+        "carnet_oculto": "*****005"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 20,
+    "fields": {
+        "nombres": "Roberto",
+        "rol": "PROFESOR",
+        "email_anonimizado": "pro****@test.com",
+        "carnet_oculto": "*****001"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 21,
+    "fields": {
+        "nombres": "Maria",
+        "rol": "TUTOR",
+        "email_anonimizado": "mar****@neoteca.com",
+        "carnet_oculto": "*****456"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 22,
+    "fields": {
+        "nombres": "Javier",
+        "rol": "PROFESOR",
+        "email_anonimizado": "pro****@test.com",
+        "carnet_oculto": "*****003"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 23,
+    "fields": {
+        "nombres": "Elena",
+        "rol": "PROFESOR",
+        "email_anonimizado": "pro****@test.com",
+        "carnet_oculto": "*****004"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 24,
+    "fields": {
+        "nombres": "Marco",
+        "rol": "PROFESOR",
+        "email_anonimizado": "pro****@test.com",
+        "carnet_oculto": "*****005"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 30,
+    "fields": {
+        "nombres": "Pepito",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "est****@test.com",
+        "carnet_oculto": "*****001"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 31,
+    "fields": {
+        "nombres": "Juanito",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "est****@test.com",
+        "carnet_oculto": "*****002"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 32,
+    "fields": {
+        "nombres": "Lucia",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "est****@test.com",
+        "carnet_oculto": "*****003"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 33,
+    "fields": {
+        "nombres": "Mateo",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "est****@test.com",
+        "carnet_oculto": "*****004"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 34,
+    "fields": {
+        "nombres": "Carla",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "est****@test.com",
+        "carnet_oculto": "*****005"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 120,
+    "fields": {
+        "nombres": "Felipe",
+        "rol": "TUTOR",
+        "email_anonimizado": "fel****@neoteca.com",
+        "carnet_oculto": "*****231"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 121,
+    "fields": {
+        "nombres": "Leonardo",
+        "rol": "TUTOR",
+        "email_anonimizado": "leo****@neoteca.com",
+        "carnet_oculto": "*****891"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 122,
+    "fields": {
+        "nombres": "Mafalda",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "maf****@neoteca.com",
+        "carnet_oculto": "*****903"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 123,
+    "fields": {
+        "nombres": "Lourdes",
+        "rol": "PROFESOR",
+        "email_anonimizado": "lou****@neoteca.com",
+        "carnet_oculto": "*****298"
+    }
+},
+{
+    "model": "neoteca.vistausuariossegura",
+    "pk": 124,
+    "fields": {
+        "nombres": "Manolito",
+        "rol": "ESTUDIANTE",
+        "email_anonimizado": "man****@neoteca.com",
+        "carnet_oculto": "*****124"
+    }
+}
+]
