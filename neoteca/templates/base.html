@@ -100,8 +100,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin_django/" target="_blank">
-                            <i class="fas fa-fw fa-cogs"></i>
+                        <a class="nav-link" href="/admin_django/"> <i class="fas fa-fw fa-cogs"></i>
                             <span>Admin Avanzado</span>
                         </a>
                     </li>
@@ -215,6 +214,39 @@
     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
     <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
     {% block extra_js %}{% endblock %}
+
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+    {% if request.session.usuario_id %}
+    <script>
+        (function() {
+            // TIEMPO EN MILISEGUNDOS (Debe coincidir o ser menor al de settings.py)
+            // 5 minutos = 300000 ms
+            const TIEMPO_LIMITE = 300000; 
+            let temporizador;
+
+            // Función que cierra la sesión
+            function cerrarSesion() {
+                // Redirigir a la vista de logout
+                window.location.href = "{% url 'logout' %}?timeout=true";
+            }
+
+            // Función que reinicia el contador si hay actividad
+            function reiniciarTemporizador() {
+                clearTimeout(temporizador);
+                temporizador = setTimeout(cerrarSesion, TIEMPO_LIMITE);
+            }
+
+            // Eventos que consideramos "actividad"
+            // (Mover mouse, teclear, hacer click, scrollear)
+            window.onload = reiniciarTemporizador;
+            document.onmousemove = reiniciarTemporizador;
+            document.onkeypress = reiniciarTemporizador;
+            document.onclick = reiniciarTemporizador;
+            document.onscroll = reiniciarTemporizador;
+        })();
+    </script>
+    {% endif %}
 
 </body>
 </html>

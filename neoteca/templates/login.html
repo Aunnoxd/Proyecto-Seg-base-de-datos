@@ -41,7 +41,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab">
                                     <i class="fas fa-user-tie icon-big"></i>
-                                    Tutor/ Docente / Admin
+                                    Tutor / Docente /Administrador
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -106,9 +106,17 @@
                         </div>
                         
                         <hr>
+                        
                         <div class="text-center">
                             <a class="small" href="{% url 'registro_tutor' %}">¿Eres un tutor? Regístrate aquí</a>
                         </div>
+                        
+                        <div class="text-center mt-2">
+                            <a class="small text-secondary font-weight-bold" href="{% url 'lista_libros' %}">
+                                <i class="fas fa-eye"></i> ¿Solo quieres mirar? Entrar como Invitado
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>

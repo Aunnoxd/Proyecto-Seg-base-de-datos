@@ -151,3 +151,29 @@ JAZZMIN_SETTINGS = {
         {"name": "Ir al Sitio", "url": "home", "permissions": ["auth.view_user"]},
     ],
 }
+
+LOGOUT_REDIRECT_URL = 'login' 
+LOGIN_URL = 'login'
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    # --- AGREGA ESTA LÍNEA AL FINAL ---
+    'neoteca.middleware.NoCacheMiddleware', 
+]
+
+# --- SEGURIDAD: CIERRE DE SESIÓN AUTOMÁTICO ---
+# Tiempo de inactividad en segundos (Ej: 300 seg = 5 minutos)
+# Puedes cambiarlo a 600 (10 min) o 1800 (30 min) según prefieras.
+SESSION_COOKIE_AGE = 300
+# Importante: Si el usuario hace clic, el tiempo se reinicia (se extiende)
+SESSION_SAVE_EVERY_REQUEST = True 
+
+# Al cerrar el navegador, se cierra la sesión
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

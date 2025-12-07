@@ -120,9 +120,23 @@ def crear_sesion_personalizada(request, usuario, rol):
 
 # --- VISTA DE LOGOUT ---
 def logout_view(request):
-    request.session.flush() 
-    logout(request) # Cierra también la sesión de Django Admin si existía
-    messages.info(request, "Sesión cerrada correctamente.")
+    # Verificamos si vino por el script de timeout
+    es_timeout = request.GET.get('timeout') == 'true'
+
+    try:
+        if 'usuario_id' in request.session: del request.session['usuario_id']
+        if 'usuario_rol' in request.session: del request.session['usuario_rol']
+    except KeyError: pass
+
+    request.session.flush()
+    logout(request) 
+
+    # Mensaje personalizado
+    if es_timeout:
+        messages.warning(request, "Tu sesión se cerró por inactividad (Seguridad).")
+    else:
+        messages.info(request, "Sesión cerrada correctamente.")
+        
     return redirect('login')
 
 # --- VISTA PRINCIPAL (HOME) ---
