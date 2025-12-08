@@ -27,7 +27,7 @@ from neoteca.estudiante_views import (
     lista_libros, mis_asignaciones, registrar_lectura, 
     registrar_tiempo_ajax, ver_libro_pdf
 )
-from neoteca.profesor_views import mi_clase, asignar_tarea, asignar_masivo
+from neoteca.profesor_views import mi_clase, asignar_tarea, asignar_masivo, eliminar_tarea
 from neoteca.tutor_views import panel_tutor
 from neoteca.views_registry import registro_tutor, registrar_estudiante_por_tutor
 
@@ -78,6 +78,7 @@ urlpatterns = [
     path('profesor/clase/', mi_clase, name='mi_clase'),
     path('profesor/asignar-tarea/', asignar_tarea, name='asignar_tarea'),
     path('profesor/asignar-masivo/', asignar_masivo, name='asignar_masivo'),
+    path('profesor/eliminar-tarea/<int:id_asignacion>/', eliminar_tarea, name='eliminar_tarea'),
     
     # ==========================================
     # 6. VISTAS DE TUTOR Y REGISTRO

@@ -1,0 +1,105 @@
+/* /static/css/admin_estilo.css */
+
+/* 1. FUENTE POPPINS (Para que coincida con el sitio) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body, h1, h2, h3, h4, h5, h6, p, a, span, div, input, button, .main-sidebar, .brand-link {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* =========================================
+   TEMA: NEOTECA ADMIN (Deep Purple)
+========================================= */
+
+/* 2. LOGIN DEL ADMIN (Pantalla de entrada) */
+body.login-page {
+    /* El mismo degradado que tu barra lateral */
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background-size: cover !important;
+}
+
+.login-logo a {
+    color: #ffffff !important;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.login-card-body {
+    border-radius: 20px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2) !important;
+}
+
+/* 3. BARRA SUPERIOR (Navbar) */
+.main-header.navbar {
+    background-image: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
+    border-bottom: none !important;
+}
+
+.main-header .nav-link {
+    color: rgba(255,255,255, 0.9) !important;
+}
+
+/* 4. BARRA LATERAL (Sidebar) */
+.main-sidebar {
+    background-color: #2c2e3e !important; /* Un tono oscuro mate elegante */
+}
+
+.brand-link {
+    background-color: #1f212d !important; /* Logo más oscuro */
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+/* Elemento activo del menú (Púrpura brillante) */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active, 
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #667eea !important;
+    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.4) !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+}
+
+/* 5. BOTONES (Estilo Píldora y Colores del Tema) */
+.btn-primary {
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+    border-radius: 50px !important;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #764ba2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-success {
+    background-color: #00b894 !important;
+    border-color: #00b894 !important;
+    border-radius: 50px !important;
+}
+
+.btn-danger {
+    background-color: #ff7675 !important;
+    border-color: #ff7675 !important;
+    border-radius: 50px !important;
+}
+
+/* 6. TARJETAS Y CONTENIDO */
+.content-wrapper {
+    background-color: #f4f7fc !important; /* El mismo fondo claro de tu sitio */
+}
+
+.card {
+    border-radius: 15px !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+}
+
+.card-header {
+    background-color: #fff !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: 700;
+    color: #5e35b1 !important; /* Títulos en Púrpura */
+}
