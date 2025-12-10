@@ -56,7 +56,7 @@ PASO 3: Variables de Entorno
 
 Crea un archivo llamado .env en la raíz del proyecto y agrega lo siguiente:
 Ini, TOML
-
+```
 DEBUG=True
 SECRET_KEY=tu_clave_secreta_neoteca_2025
 DB_USER=system
@@ -64,7 +64,7 @@ DB_PASSWORD=biblioteca_123
 DB_HOST=localhost
 DB_PORT=1521
 DB_SERVICE=XE
-
+```
 PASO 4: Ejecución
 Bash
 
@@ -73,12 +73,13 @@ python manage.py runserver
 
 Accede al sistema en: http://127.0.0.1:8000
 👤 Credenciales de Acceso (Demo)
+``` 
 Rol	Usuario / Email	Contraseña	Funcionalidad
 Administrador	admin@neoteca.com	admin1 Gestión total + Auditoría Técnica
 Profesor	profe@neoteca.com	profe1	Asignación masiva y gestión de lectura
 Tutor	leotutor@neoteca.com leo1	Código vinculación: TUT-9091
 Estudiante	Nombre: Mafalda	mafalda1	TUT-9091 Requiere Código de Tutor
-
+```
 Estado del Proyecto: Finalizado (Defensa)
 
 Desarrollado por: [TUX]
