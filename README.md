@@ -4,27 +4,6 @@
 
 Este proyecto destaca por delegar la lógica de negocio crítica (validaciones, auditoría y procesos masivos) directamente al motor de base de datos **Oracle**, garantizando la integridad y seguridad de la información.
 
-
-## 📂 Estructura del Proyecto
-
-neoteca_sistema/
-├── neoteca/                # Aplicación Principal
-│   ├── migrations/         # Historial de cambios en BD
-│   ├── templates/          # Archivos HTML (Vistas)
-│   ├── static/             # CSS (estilo_personalizado.css), JS, Imágenes
-│   ├── admin.py            # Configuración del Panel Admin
-│   ├── models.py           # Modelos (Mapeo a Oracle)
-│   └── views.py            # Controladores de lógica
-├── neoteca_project/        # Configuración del Proyecto
-│   ├── settings.py         # Configuración global
-│   └── urls.py             # Rutas web
-├── media/                  # Portadas y PDFs subidos
-├── neoteca_full.dmp        # RESPALDO (Opción Docker)
-├── neoteca_full_script.sql # SCRIPT SQL COMPLETO (Opción Windows Fácil)
-├── requirements.txt        # Dependencias del proyecto
-├── manage.py               # Ejecutor de Django
-└── .env                    # Variables de entorno
-
  Guía de Instalación y Despliegue
 PASO 1: Base de Datos (Elige UNA opción)
 🔵 OPCIÓN A: Docker (Recomendada para Linux/Mac)
